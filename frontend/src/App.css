@@ -51,5 +51,25 @@ input {
 }
 input.form-control {
   width: 200px;
-  
+
+}
+
+.tags {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 10vw;
+
+}
+.contacts {
+  max-width: 600px;
+  display: inline-block;
+  height: 210px;
+}
+h3 {
+  width: 100%;
+  float: left;
+}
+.tag-area {
+  width: 100%;
+  display: block;
 }

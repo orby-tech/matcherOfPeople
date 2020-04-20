@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 
 import  Start  from './Start'
+import  Profile from './Profile'
+
 import { Route } from 'react-router-dom';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -11,6 +13,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Route path="/" exact component={Start} />
+        <Route path="/profile" exact component={Profile} />
       </BrowserRouter>
     </div>
   );
