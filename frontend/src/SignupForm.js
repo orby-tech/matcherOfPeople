@@ -35,24 +35,33 @@ class SignupForm extends React.Component {
     return (
       <>
         <h4>Sign Up</h4>
-        <label htmlFor="first_name">nik</label>
-        <input
-          type="text"
-          name="first_name"
+       <input 
+          type="text" 
+          className="form-control" 
+          placeholder="Username" 
+          aria-label="Username" 
+          aria-describedby="basic-addon1"                
+          name="email"
           value={this.state.first_name}
           onChange={this.handle_change}
         />
-        <label htmlFor="email">email</label>
-        <input
-          type="text"
+       <input 
+          type="text" 
+          className="form-control" 
+          placeholder="E-mail" 
+          aria-label="Username" 
+          aria-describedby="basic-addon1"                
           name="email"
           value={this.state.email}
           onChange={this.handle_change}
         />
-        <label htmlFor="password">Password</label>
         <input
           type="password"
           name="password"
+          className="form-control" 
+          placeholder="Password" 
+          aria-label="Username" 
+          aria-describedby="basic-addon1"    
           value={this.state.password}
           onChange={this.handle_change}
         />

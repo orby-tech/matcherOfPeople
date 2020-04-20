@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import Nav from './Nav';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
+import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom';
+
 import './App.css';
 
 
@@ -119,19 +122,23 @@ class signLogApp extends Component {
 
     return (
       <>
-      <div className="App">
-        <Nav
-          logged_in={this.state.logged_in}
-          display_form={this.display_form}
-          handle_logout={this.handle_logout}
-        />
-        {form}
-        <h3>
-          {this.state.logged_in
-            ? `Hello, ${localStorage.getItem('username')}`
-            : 'Please Log In'}
-        </h3>
-      </div>
+        <div className="App">
+          <Nav
+            logged_in={this.state.logged_in}
+            display_form={this.display_form}
+            handle_logout={this.handle_logout}
+          />
+          {form}
+          <h3>
+            {this.state.logged_in
+              ? `Hello, ${localStorage.getItem('username')}`
+              : 'Please Log In'}
+          </h3>
+        </div>
+        <Link 
+              to="/profile">
+              Temp href to profile
+        </Link>
       </>
     );
   }

@@ -38,3 +38,18 @@
     transform: rotate(360deg);
   }
 }
+
+button {
+  margin:5px;
+}
+
+input {
+  display: block;
+  width: 200px;
+  margin-left:  calc(50% - 100px);
+  margin-bottom: 10px;
+}
+input.form-control {
+  width: 200px;
+  
+}

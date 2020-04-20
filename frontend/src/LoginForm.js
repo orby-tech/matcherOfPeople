@@ -20,26 +20,32 @@ class LoginForm extends React.Component {
 
   render() {
     return (
-      <>
+      <div className="start-container">
         <h4>Log In</h4>
-        <label htmlFor="username">email</label>
-        <input
-          type="text"
+       <input 
+          type="text" 
+          className="form-control" 
+          placeholder="Username" 
+          aria-label="Username" 
+          aria-describedby="basic-addon1"                
           name="email"
           value={this.state.email}
           onChange={this.handle_change}
         />
-        <label htmlFor="password">Password</label>
         <input
           type="password"
           name="password"
+          className="form-control" 
+          placeholder="Password" 
+          aria-label="Username" 
+          aria-describedby="basic-addon1"    
           value={this.state.password}
           onChange={this.handle_change}
         />
         <Button className="sign_log_button" variant='primary' onClick={e => this.props.handle_login(e, this.state)}>
           Log in
         </Button>
-      </>
+      </div>
     );
   }
 }
