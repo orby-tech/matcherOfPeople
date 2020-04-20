@@ -4,6 +4,9 @@ let arr = ["travel", "prog", "pictures"]
 let arr_counts = [3, 2, 1]
 
 
+fastify.register(require('fastify-cors'), { 
+})
+
 fastify.route({
   method: 'POST',
   url: '/toptags',
@@ -27,7 +30,7 @@ fastify.route({
     // E.g. check authentication
   },
   handler: async (request, reply) => {
-  	console.log(request.body.text)
+  	console.log(request)
     reply.send(arr.concat(arr_counts).join(" "))
   }
 })
