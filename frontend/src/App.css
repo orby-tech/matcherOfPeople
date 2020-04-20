@@ -57,7 +57,7 @@ input.form-control {
 .tags {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  grid-gap: 10vw;
+  grid-gap: 12vw;
 
 }
 .contacts {
@@ -72,4 +72,8 @@ h3 {
 .tag-area {
   width: 100%;
   display: block;
+}
+.grid-profile {
+  display: grid;
+  grid-template-columns: 0.1fr 1fr 0.1fr;
 }
