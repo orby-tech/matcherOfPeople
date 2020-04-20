@@ -1,8 +1,12 @@
 const fastify = require('fastify')({ logger: true })
 
+let arr = ["travel", "prog", "pictures"]
+let arr_counts = [3, 2, 1]
+
+
 fastify.route({
   method: 'POST',
-  url: '/',
+  url: '/toptags',
   schema: {
     // request needs to have a querystring with a `name` parameter
     querystring: {
@@ -24,7 +28,7 @@ fastify.route({
   },
   handler: async (request, reply) => {
   	console.log(request.body.text)
-    reply.send(request.body.text)
+    reply.send(arr.concat(arr_counts).join(" "))
   }
 })
 
