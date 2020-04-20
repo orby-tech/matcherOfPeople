@@ -4,14 +4,14 @@ import { BrowserRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 
-class Profile extends Component{
+class TopTags extends Component{
 
 
 	render(){
 		return(
 			<>
 				<h1>
-				Your profile
+				Top of tags
 				</h1>
 
 				<div className="grid-profile">
@@ -22,30 +22,15 @@ class Profile extends Component{
             </Link>
             <Link className="nav-bar"
                   to="/messages"> 
-                  messages
+                  messeges
             </Link>
             <Link className="nav-bar"
                   to="/profile"> 
                   profile 
             </Link>
 					</div>
-					<div className="tags">
+					<div >
 
-						<div className="input-group">
-							<h3> Your private tags </h3>
-						  <textarea className="form-control" aria-label="With textarea"></textarea>
-						</div>
-						
-						<div className="input-group">
-							<h3> Your pablic tags </h3>
-						  <textarea className="form-control" aria-label="With textarea"></textarea>
-						</div>
-
-						<div>
-							<h2> Your contacts </h2>
-						  <textarea className="form-control" aria-label="With textarea"></textarea>
-
-						</div>
 					</div>
 				</div>
 				<div/>
@@ -54,4 +39,4 @@ class Profile extends Component{
 		)
 	}
 }
-export default Profile;
+export default TopTags;

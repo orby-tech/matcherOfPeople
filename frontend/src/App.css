@@ -60,10 +60,8 @@ input.form-control {
   grid-gap: 12vw;
 
 }
-.contacts {
-  max-width: 600px;
-  display: inline-block;
-  height: 210px;
+h1 {
+  margin-bottom: 35px;
 }
 h3 {
   width: 100%;
@@ -76,4 +74,8 @@ h3 {
 .grid-profile {
   display: grid;
   grid-template-columns: 0.1fr 1fr 0.1fr;
+}
+.nav-bar {
+  width: 100%;
+  display: block;
 }

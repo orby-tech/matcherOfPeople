@@ -1,11 +1,12 @@
-import React from 'react';
-import './App.css';
+import  React from 'react';
+import  './App.css';
 
 import  Start  from './Start'
 import  Profile from './Profile'
-
-import { Route } from 'react-router-dom';
-import { BrowserRouter } from 'react-router-dom';
+import  Messages from './Messages'
+import  TopTags from './TopTags'
+import  { Route } from 'react-router-dom';
+import  { BrowserRouter } from 'react-router-dom';
 
 
 function App() {
@@ -14,6 +15,9 @@ function App() {
       <BrowserRouter>
         <Route path="/" exact component={Start} />
         <Route path="/profile" exact component={Profile} />
+        <Route path="/messages" exact component={Messages} />
+        <Route path="/tags" exact component={TopTags} />
+
       </BrowserRouter>
     </div>
   );
