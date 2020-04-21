@@ -124,6 +124,7 @@ function build (opts) {
         }
       }
     })
+   
 
     fastify.route({
       method: 'GET',
@@ -154,7 +155,19 @@ function build (opts) {
       ]),
       handler: (req, reply) => {
         req.log.info('Auth route')
-        reply.send({ hello: 'world' })
+        fastify.level.put(req.body.user, req.body.password, onPut)
+
+        function onPut (err) {
+          if (err) return reply.send(err)
+          fastify.jwt.sign(req.body, onToken)
+        }
+
+        function onToken (err, token) {
+          if (err) return reply.send(err)
+          req.log.info('User created')
+          reply.send({ token })
+        }
+
       }
     })
   }

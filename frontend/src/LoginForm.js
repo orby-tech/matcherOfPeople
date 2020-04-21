@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 
 class LoginForm extends React.Component {
   state = {
-    email: '',
+    user: '',
     password: ''
   };
 
@@ -28,8 +28,8 @@ class LoginForm extends React.Component {
           placeholder="Username" 
           aria-label="Username" 
           aria-describedby="basic-addon1"                
-          name="email"
-          value={this.state.email}
+          name="user"
+          value={this.state.user}
           onChange={this.handle_change}
         />
         <input
@@ -37,7 +37,7 @@ class LoginForm extends React.Component {
           name="password"
           className="form-control" 
           placeholder="Password" 
-          aria-label="Username" 
+          aria-label="password" 
           aria-describedby="basic-addon1"    
           value={this.state.password}
           onChange={this.handle_change}

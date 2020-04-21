@@ -45,18 +45,10 @@ class signLogApp extends Component {
       body: raw,
       redirect: 'follow'
     };
-    fetch('http://api.orby.site/user/obtain_token/', requestOptions)
+    fetch('http://127.0.0.1:8000/auth-multiple', requestOptions)
       .then(response => response.json())
       .then(result => {
-        if (result.token){
-          localStorage.setItem('token', result.token);
-          this.setState({
-            logged_in: true,
-            displayed_form: '',
-            username: result.name
-          });
-          localStorage.setItem('username', this.state.username);
-        } 
+        console.log(result.token)
       })
       .catch(error => {
         alert("Ups, may be uncorrect form?")
