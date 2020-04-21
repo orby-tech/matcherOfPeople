@@ -76,20 +76,11 @@ class signLogApp extends Component {
       body: raw,
       redirect: 'follow'
     };
-    fetch('http://api.orby.site/user/create/', requestOptions)
+    console.log(raw)
+    fetch('http://127.0.0.1:8000/register', requestOptions)
       .then(response => response.json())
-      .then(result => {
-        if(result.email){
-          if (result.email[0] === "Enter a valid email address." || result.email[0] === "This field may not be blank."){
-
-            alert("Enter a valid email address.")
-          } 
-        }else if (result.password[0] === "This field may not be blank."){
-          alert("Password may not be blank.")
-        } else{
-        console.log(result)
-        }
-
+      .then(result => {        
+        console.log(result.token)
     })
       .catch(error => console.log('error', error));
   };

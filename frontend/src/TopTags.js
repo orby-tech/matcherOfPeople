@@ -73,15 +73,15 @@ class TopTags extends Component{
 		            </tr>
 	            </thead>
 
-								<tbody>
-	              {this.state.tags.map( c  =>
-	                <tr>
+							<tbody>
+              {this.state.tags.map( c  =>
+                <tr>
 
-	                  <td>{c.tag}</td>
-	                  <td>{c.count}</td>
-	                </tr>)} 
+                  <td>{c.tag}</td>
+                  <td>{c.count}</td>
+                </tr>)} 
 
-	              </tbody>
+              </tbody>
 
 						</div>
 						</div>

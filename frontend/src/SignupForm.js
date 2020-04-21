@@ -4,9 +4,8 @@ import Button from 'react-bootstrap/Button';
 
 class SignupForm extends React.Component {
   state = {
-    email: '',
     password: '',
-    first_name: ''
+    user: ''
   };
 
   handle_change = e => {
@@ -20,7 +19,7 @@ class SignupForm extends React.Component {
   };
   signup = e => {
     try {
-      if(this.state.first_name) {
+      if(this.state.user) {
         this.props.handle_signup(e, this.state)
       
       } else{
@@ -39,20 +38,10 @@ class SignupForm extends React.Component {
           type="text" 
           className="form-control" 
           placeholder="Username" 
-          aria-label="Username" 
+          aria-label="User" 
           aria-describedby="basic-addon1"                
-          name="email"
-          value={this.state.first_name}
-          onChange={this.handle_change}
-        />
-       <input 
-          type="text" 
-          className="form-control" 
-          placeholder="E-mail" 
-          aria-label="Username" 
-          aria-describedby="basic-addon1"                
-          name="email"
-          value={this.state.email}
+          name="user"
+          value={this.state.user}
           onChange={this.handle_change}
         />
         <input
@@ -60,7 +49,7 @@ class SignupForm extends React.Component {
           name="password"
           className="form-control" 
           placeholder="Password" 
-          aria-label="Username" 
+          aria-label="Password" 
           aria-describedby="basic-addon1"    
           value={this.state.password}
           onChange={this.handle_change}
