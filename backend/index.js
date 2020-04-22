@@ -7,18 +7,29 @@ var urldb = "mongodb://localhost:27017/";
 
 const promise1 = new Promise(function(resolve, reject) {
   MongoClient.connect(urldb, function(err, db) {
-  if (err) throw err;
-  var dbo = db.db("tagdb");
-  var mysort = { count: -1 };
-  dbo.collection("toptags").find({}, { projection: { _id: 0 }}).sort(mysort).toArray(function(err, result) {
     if (err) throw err;
-    db.close();
-    resolve(result);
+    var dbo = db.db("tagdb");
+    var mysort = { count: -1 };
+    dbo.collection("toptags").find({}, { projection: { _id: 0 }}).sort(mysort).toArray(function(err, result) {
+      if (err) throw err;
+      db.close();
+      resolve(result);
+    });
   });
-
 });
-});
+const promise2 = new Promise(function(resolve, reject) {
+  MongoClient.connect(urldb, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("tagdb");
+    var query = { "user": reject };
+    dbo.collection("usertag").find(query, { projection: { _id: 0, user: 0 }}).toArray(function(err, result) {
+      if (err) throw err;
+      db.close();
+      resolve(result);
 
+    });
+  });
+});
 
 
 
@@ -142,14 +153,22 @@ function build (opts) {
 
 
     fastify.route({
-      method: 'GET',
-      url: '/auth',
+      method: 'POST',
+      url: '/usertag',
       preHandler: fastify.auth([fastify.verifyJWTandLevelDB]),
       handler: (req, reply) => {
         req.log.info('Auth route')
-        reply.send({ hello: 'world' })
+
+        let reqtodb = req.body.user
+        promise2.then(function(value, reqtodb) {
+          reply.send(JSON.stringify(value))
+          console.log(value)
+        });
       }
     })
+
+
+
     fastify.route({
       method: 'POST',
       url: '/toptags',
@@ -169,11 +188,11 @@ function build (opts) {
       beforeHandler: async (request, reply) => {
       },
       handler: async (request, reply) => {
-      promise1.then(function(value) {
-        console.log(value);
+        promise1.then(function(value) {
+          console.log(value);
 
-        reply.send(JSON.stringify(value))
-      });
+          reply.send(JSON.stringify(value))
+        });
       }
     })
 

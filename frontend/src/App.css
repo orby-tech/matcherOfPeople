@@ -82,3 +82,17 @@ h3 {
 .tag-top-table {
 margin-left: 60px;
 }
+
+.usertag {
+  height: 26px;
+  border: 1px solid blue;
+  border-radius: 13px;
+  display: inline-block;
+  margin:2px;
+  padding-left: 10px;
+}
+.delButton {
+  height: 15px;
+  width: 15px;
+  margin-right: 3px;
+}

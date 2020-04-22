@@ -49,6 +49,10 @@ class signLogApp extends Component {
       .then(response => response.json())
       .then(result => {
         console.log(result.token)
+        localStorage.setItem('username', data.user);
+        localStorage.setItem('token', result.token);
+
+
       })
       .catch(error => {
         alert("Ups, may be uncorrect form?")

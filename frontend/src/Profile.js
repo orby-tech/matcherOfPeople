@@ -1,7 +1,10 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
-import { BrowserRouter } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import  React, { Component } from 'react';
+import  { Route } from 'react-router-dom';
+import  { BrowserRouter } from 'react-router-dom';
+import  { Link } from 'react-router-dom';
+
+
+import  UserTags from './UserTags';
 
 
 class Profile extends Component{
@@ -38,8 +41,8 @@ class Profile extends Component{
 						
 						<div className="input-group">
 							<h3> Your pablic tags </h3>
-						  <textarea className="form-control" aria-label="With textarea"></textarea>
-						</div>
+							<UserTags />
+							</div>
 
 						<div>
 							<h2> Your contacts </h2>
