@@ -1,21 +1,26 @@
 'use strict'
-/*
-Register a user:
-    curl -i 'http://127.0.0.1:3000/register' -H 'content-type: application/json' --data '{"user": "myuser","password":"mypass"}'
-Will return:
-    {"token":"YOUR_JWT_TOKEN"}
-The application then:
-1. generates a JWT token (from 'supersecret') and adds to the response headers
-1. inserts user in the leveldb
-Check it's all working by using one or the other auth mechanisms:
-1. Auth using username and password (you can also use JWT on this endpoint)
-    curl 'http://127.0.0.1:3000/auth-multiple' -H 'content-type: application/json' --data '{"user": "myuser","password":"mypass"}'
-    {"hello":"world"}
-1. Auth using JWT token
-    curl -i 'http://127.0.0.1:3000/auth' -H 'content-type: application/json' -H "auth: YOUR_JWT_TOKEN"
- */
 
 const Fastify = require('fastify')
+var MongoClient = require('mongodb').MongoClient;
+var urldb = "mongodb://localhost:27017/";
+
+
+const promise1 = new Promise(function(resolve, reject) {
+  MongoClient.connect(urldb, function(err, db) {
+  if (err) throw err;
+  var dbo = db.db("tagdb");
+  var mysort = { count: -1 };
+  dbo.collection("toptags").find({}, { projection: { _id: 0 }}).sort(mysort).toArray(function(err, result) {
+    if (err) throw err;
+    db.close();
+    resolve(result);
+  });
+
+});
+});
+
+
+
 
 function build (opts) {
   const fastify = Fastify(opts)
@@ -25,6 +30,7 @@ function build (opts) {
     .register(require('fastify-jwt'), { secret: 'supersecret' })
     .register(require('fastify-leveldb'), { name: 'authdb' })
     .register(require('fastify-auth'))
+
     .after(routes)
 
   fastify.decorate('verifyJWTandLevelDB', verifyJWTandLevelDB)
@@ -125,7 +131,6 @@ function build (opts) {
       }
     })
    
-
     fastify.route({
       method: 'GET',
       url: '/no-auth',
@@ -135,6 +140,7 @@ function build (opts) {
       }
     })
 
+
     fastify.route({
       method: 'GET',
       url: '/auth',
@@ -142,6 +148,32 @@ function build (opts) {
       handler: (req, reply) => {
         req.log.info('Auth route')
         reply.send({ hello: 'world' })
+      }
+    })
+    fastify.route({
+      method: 'POST',
+      url: '/toptags',
+      schema: {
+        querystring: {
+          name: { type: 'string' }
+        },
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              hello: { type: 'string' }
+            }
+          }
+        }
+      },
+      beforeHandler: async (request, reply) => {
+      },
+      handler: async (request, reply) => {
+      promise1.then(function(value) {
+        console.log(value);
+
+        reply.send(JSON.stringify(value))
+      });
       }
     })
 
@@ -181,10 +213,18 @@ if (require.main === module) {
       level: 'info'
     }
   })
-  fastify.listen(8000, err => {
-    if (err) throw err
-    console.log(`Server listening at http://localhost:${fastify.server.address().port}`)
-  })
+  MongoClient.connect(urldb, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("mydb");
+    fastify.listen(8000, err => {
+      if (err) throw err
+      console.log(`Server listening at http://localhost:${fastify.server.address().port}`)
+    })
+  });
 }
+
+
+
+
 
 module.exports = build
