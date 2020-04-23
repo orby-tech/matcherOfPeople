@@ -169,6 +169,40 @@ function build (opts) {
           })
       }
     })
+    fastify.route({
+      method: 'POST',
+      url: '/userprivatetag',
+      preHandler: fastify.auth([fastify.verifyJWTandLevelDB]),
+      handler: (req, reply) => {
+        req.log.info('Auth route')
+        let query = {user: req.body.user}
+        MongoClient.connect(urldb)
+          .then((db) => db.db("tagdb"))
+          .then((dbo) => dbo.collection("userprivatetag").find(query, { projection: { _id: 0, user: 0 }}).toArray())
+          .catch((err) => {})
+          .then((result) => {
+            console.log(result)
+            reply.send(JSON.stringify(result))
+          })
+      }
+    })    
+    fastify.route({
+      method: 'POST',
+      url: '/usercontacts',
+      preHandler: fastify.auth([fastify.verifyJWTandLevelDB]),
+      handler: (req, reply) => {
+        req.log.info('Auth route')
+        let query = {user: req.body.user}
+        MongoClient.connect(urldb)
+          .then((db) => db.db("tagdb"))
+          .then((dbo) => dbo.collection("usercontact").find(query, { projection: { _id: 0, user: 0 }}).toArray())
+          .catch((err) => {})
+          .then((result) => {
+            console.log(result)
+            reply.send(JSON.stringify(result))
+          })
+      }
+    })
 
     fastify.route({
       method: 'POST',
@@ -182,7 +216,44 @@ function build (opts) {
 
       }
     })
-
+    fastify.route({
+      method: 'POST',
+      url: '/usercontactsuppdate',
+      preHandler: fastify.auth([fastify.verifyJWTandLevelDB]),
+      handler: (req, reply) => {
+        req.log.info('Auth route')
+        console.log(req)
+        let query = {user: req.body.user}
+        let newvalues  =  { $set: { "user": req.body.user, "tag": req.body.tag } };
+        MongoClient.connect(urldb)
+          .then((db) => db.db("tagdb"))
+          .then((dbo) => dbo.collection("usercontact").updateOne(query, newvalues))
+          .catch((err) => {})
+          .then((result) => {
+            console.log(result)
+            reply.send("update")
+          })
+      }
+    })
+    fastify.route({
+      method: 'POST',
+      url: '/userprivatetaguppdate',
+      preHandler: fastify.auth([fastify.verifyJWTandLevelDB]),
+      handler: (req, reply) => {
+        req.log.info('Auth route')
+        console.log(req)
+        let query = {user: req.body.user}
+        let newvalues  =  { $set: { "user": req.body.user, "tag": req.body.tag } };
+        MongoClient.connect(urldb)
+          .then((db) => db.db("tagdb"))
+          .then((dbo) => dbo.collection("userprivatetag").updateOne(query, newvalues))
+          .catch((err) => {})
+          .then((result) => {
+            console.log(result)
+            reply.send("update")
+          })
+      }
+    })
     fastify.route({
       method: 'POST',
       url: '/toptags',

@@ -5,6 +5,8 @@ import  { Link } from 'react-router-dom';
 
 
 import  UserTags from './UserTags';
+import  UserPrivateTags from './UserPrivateTags';
+import  UserContacts from './UserContacts';
 
 
 class Profile extends Component{
@@ -36,19 +38,19 @@ class Profile extends Component{
 
 						<div className="input-group">
 							<h3> Your private tags </h3>
-						  <textarea className="form-control" aria-label="With textarea"></textarea>
+							<UserPrivateTags />
 						</div>
 						
 						<div className="input-group">
 							<h3> Your pablic tags </h3>
 							<UserTags />
-							</div>
-
-						<div>
-							<h2> Your contacts </h2>
-						  <textarea className="form-control" aria-label="With textarea"></textarea>
-
 						</div>
+
+						<div className="input-group">
+							<h3> Your contacts </h3>
+						  <UserContacts />
+						</div>
+
 					</div>
 				</div>
 				<div/>

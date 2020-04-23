@@ -7,7 +7,7 @@ import del from "./img/delete.png"
 import append from "./img/plus.png"
 
 
-class UserTags extends Component{
+class UserPrivateTags extends Component{
   constructor(props) {
       super(props);
       this.state  = {
@@ -27,7 +27,7 @@ class UserTags extends Component{
       body: raw,
       redirect: 'follow'
     };
-    fetch('http://localhost:8000/usertaguppdate', requestOptions)
+    fetch('http://localhost:8000/userprivatetaguppdate', requestOptions)
       .then(response => response.json())
       .then(result => {
       })
@@ -40,12 +40,12 @@ class UserTags extends Component{
   	this.serverTagUppdate()
   }
   handleAppend(e){
-  	if(document.getElementById("pablicTagAppend").value) {
+  	if(document.getElementById("pablicPrivateTagAppend").value) {
 	  	let arr = this.state.tags
-	  	arr.push(document.getElementById("pablicTagAppend").value)
+	  	arr.push(document.getElementById("pablicPrivateTagAppend").value)
 	  	this.setState({tags: arr})
 	  	this.serverTagUppdate()
-	  	document.getElementById("pablicTagAppend").value = ""
+	  	document.getElementById("pablicPrivateTagAppend").value = ""
 	  }
   }
 	componentDidMount(){
@@ -59,7 +59,7 @@ class UserTags extends Component{
       body: raw,
       redirect: 'follow'
     };
-    fetch('http://localhost:8000/usertag', requestOptions)
+    fetch('http://localhost:8000/userprivatetag', requestOptions)
       .then(response => response.json())
       .then(result => {
 	      if (result[0].tag){
@@ -68,7 +68,7 @@ class UserTags extends Component{
 	      	})
 	      } else{
 	      	this.setState({
-	      		tags: ["Append your Public Contacts"]
+	      		tags: ["Append your Private Contacts"]
 	      	})
 	      }
       })
@@ -90,7 +90,7 @@ class UserTags extends Component{
 		      <input 
 		      	className="input_append"
 		      	placeholder="append tags"
-		      	id="pablicTagAppend"
+		      	id="pablicPrivateTagAppend"
 		      	type="text" />	      	
 		      <img 
 	      		className="appendButton"	      		
@@ -101,4 +101,4 @@ class UserTags extends Component{
 		)
 	}
 }
-export default UserTags;
+export default UserPrivateTags;
