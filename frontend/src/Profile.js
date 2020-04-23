@@ -35,7 +35,6 @@ class Profile extends Component{
             </Link>
 					</div>
 					<div className="tags">
-
 						<div className="input-group">
 							<h3> Your private tags </h3>
 							<UserPrivateTags />
@@ -50,12 +49,11 @@ class Profile extends Component{
 							<h3> Your contacts </h3>
 						  <UserContacts />
 						</div>
-
 					</div>
 				</div>
-				<div/>
+			<div/>
 
-			</>
+		</>
 		)
 	}
 }
