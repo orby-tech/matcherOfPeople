@@ -85,7 +85,7 @@ margin-left: 60px;
 
 .usertag {
   height: 26px;
-  border: 1px solid blue;
+  border: 1px solid #7FFFD4;
   border-radius: 13px;
   display: inline-block;
   margin:2px;
@@ -95,4 +95,16 @@ margin-left: 60px;
   height: 15px;
   width: 15px;
   margin-right: 3px;
+}
+
+.input_append {
+  width: 80%;
+  margin: 0px;
+  margin-top: 25px;
+}
+.appendButton {
+  margin-top: 25px;
+  margin-left: 6px;
+  width: 25px;
+  height: 25px;
 }

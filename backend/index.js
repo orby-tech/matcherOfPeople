@@ -30,6 +30,19 @@ const promise2 = new Promise(function(resolve, reject) {
     });
   });
 });
+function updateTag(user, tag) {
+  MongoClient.connect(urldb, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("tagdb");
+    var query = { "user": user };
+    var newvalues = { $set: { "user": user, "tag": tag } };
+    dbo.collection("usertag").updateOne(query, newvalues, function(err, res) {
+      if (err) throw err;
+      db.close();
+
+    });
+  });
+};
 
 
 
@@ -167,7 +180,17 @@ function build (opts) {
       }
     })
 
+    fastify.route({
+      method: 'POST',
+      url: '/usertaguppdate',
+      preHandler: fastify.auth([fastify.verifyJWTandLevelDB]),
+      handler: (req, reply) => {
+        req.log.info('Auth route')
+        updateTag(req.body.user, req.body.tag)
+        reply.send("update")
 
+      }
+    })
 
     fastify.route({
       method: 'POST',
@@ -238,6 +261,8 @@ if (require.main === module) {
     fastify.listen(8000, err => {
       if (err) throw err
       console.log(`Server listening at http://localhost:${fastify.server.address().port}`)
+      db.close();
+
     })
   });
 }
