@@ -16,11 +16,10 @@ class UserTags extends Component{
   }
 
   serverTagUppdate(){
-  	alert("afd")
   	var myHeaders = new Headers();
 		myHeaders.append("auth", localStorage.getItem('token'));
     myHeaders.append("Content-Type", "application/json");
-		var raw = JSON.stringify({"user": localStorage.getItem('username'), "tags": this.state.tags.join()});
+		var raw = JSON.stringify({user: localStorage.getItem('username'), tag: this.state.tags});
 		console.log(this.state.tags)
 		var requestOptions = {
       method: 'POST',
@@ -36,7 +35,7 @@ class UserTags extends Component{
 
   handleDelete(e,c){
   	let arr = this.state.tags
-  	delete arr[arr.indexOf(c)]
+  	arr.splice(arr.indexOf(c), 1)
   	this.setState({tags: arr})
   	this.serverTagUppdate()
   }
@@ -46,6 +45,7 @@ class UserTags extends Component{
 	  	arr.push(document.getElementById("pablicTagAppend").value)
 	  	this.setState({tags: arr})
 	  	this.serverTagUppdate()
+	  	document.getElementById("pablicTagAppend").value = ""
 	  }
   }
 	componentDidMount(){
@@ -83,15 +83,17 @@ class UserTags extends Component{
 	      		src={del}/>
 	      	</div> 
 	      )} 
-	      <input 
-	      	className="input_append"
-	      	placeholder="append tags"
-	      	id="pablicTagAppend"
-	      	type="text" />	      	
-	      <img 
-      		className="appendButton"	      		
-      		onClick={(e) => this.handleAppend(e)}
-      		src={append}/>
+	      <div className="block_input">
+		      <input 
+		      	className="input_append"
+		      	placeholder="append tags"
+		      	id="pablicTagAppend"
+		      	type="text" />	      	
+		      <img 
+	      		className="appendButton"	      		
+	      		onClick={(e) => this.handleAppend(e)}
+	      		src={append}/>
+	      </div>
 			</>
 		)
 	}

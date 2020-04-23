@@ -17,19 +17,6 @@ const promise1 = new Promise(function(resolve, reject) {
     });
   });
 });
-const promise2 = new Promise(function(resolve, reject) {
-  MongoClient.connect(urldb, function(err, db) {
-    if (err) throw err;
-    var dbo = db.db("tagdb");
-    var query = { "user": reject };
-    dbo.collection("usertag").find(query, { projection: { _id: 0, user: 0 }}).toArray(function(err, result) {
-      if (err) throw err;
-      db.close();
-      resolve(result);
-
-    });
-  });
-});
 function updateTag(user, tag) {
   MongoClient.connect(urldb, function(err, db) {
     if (err) throw err;
@@ -171,12 +158,15 @@ function build (opts) {
       preHandler: fastify.auth([fastify.verifyJWTandLevelDB]),
       handler: (req, reply) => {
         req.log.info('Auth route')
-
-        let reqtodb = req.body.user
-        promise2.then(function(value, reqtodb) {
-          reply.send(JSON.stringify(value))
-          console.log(value)
-        });
+        let query = {user: req.body.user}
+        MongoClient.connect(urldb)
+          .then((db) => db.db("tagdb"))
+          .then((dbo) => dbo.collection("usertag").find(query, { projection: { _id: 0, user: 0 }}).toArray())
+          .catch((err) => {})
+          .then((result) => {
+            console.log(result)
+            reply.send(JSON.stringify(result))
+          })
       }
     })
 
@@ -185,6 +175,7 @@ function build (opts) {
       url: '/usertaguppdate',
       preHandler: fastify.auth([fastify.verifyJWTandLevelDB]),
       handler: (req, reply) => {
+        console.log(req.body)
         req.log.info('Auth route')
         updateTag(req.body.user, req.body.tag)
         reply.send("update")
