@@ -3,28 +3,36 @@ import  { Route } from 'react-router-dom';
 import  { BrowserRouter } from 'react-router-dom';
 import  { Link } from 'react-router-dom';
 
+import  { connect } from 'react-redux'
+import  { changeDialog } from './redux/actions'
+
 class DialogsBlock extends Component{
   constructor(props) {
       super(props);
       this.state  = {
-          tags: []
+          messages: []
       };
   }
-	CcomponentDidMount(){
+  handleOpen(e, c) {
+    this.props.dispatch(changeDialog(c))
+  }
+	componentDidMount(){
 		var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    var raw = JSON.stringify({});
+    myHeaders.append("auth", localStorage.getItem('token'));
+
+    var raw = JSON.stringify({"user": localStorage.getItem('username')});
 		var requestOptions = {
       method: 'POST',
       headers: myHeaders,
       body: raw,
       redirect: 'follow'
     };
-    fetch('http://localhost:8000/toptags', requestOptions)
+    fetch('http://localhost:8000/userdialogs', requestOptions)
       .then(response => response.json())
       .then(result => {
       	this.setState({
-      		tags: result
+      		messages: result[0].dialog
       	})
       })
 	}
@@ -33,23 +41,23 @@ class DialogsBlock extends Component{
 	render(){
 		return(
 			<>
-					<div >
-						<div className="tag-top-table">
-							<tbody>
-              {this.state.tags.map( c  =>
-                <tr>
-
-                  <td>{c.tag}</td>
-                </tr>)} 
-
-              </tbody>
-
-						</div>
-					</div>
-				<div/>
+				<div className="dialogs_block">
+        {this.state.messages.map( c  =>
+          <div className="dialog_button">
+            <td onClick={(e) => this.handleOpen(e, c)} >{c}</td>
+          </div>)} 
+			</div>
 
 			</>
 		)
 	}
 }
-export default DialogsBlock;
+
+const mapStateToProps = (state) => {
+  return {
+    dialog: state.dialog
+  };
+}
+const WrappedDialogsBlock = connect(mapStateToProps)(DialogsBlock);
+
+export default WrappedDialogsBlock;

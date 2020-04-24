@@ -4,7 +4,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 import  DialogsBlock from './DialogsBlock';
-import MessegesBlock from './DialogsBlock';
+import WrappedMessagesBlock from './MessegesBlock';
+
+import  { connect } from 'react-redux'
 
 
 class Messages extends Component{
@@ -40,8 +42,13 @@ class Messages extends Component{
 						</div>					
 
 						<div className="messeges mes">
-							<h3>Messeges</h3>
-							<MessegesBlock />
+							<h3>{
+								this.props.dialog 
+									? this.props.dialog
+									: "Messages"
+							}
+							</h3>
+							<WrappedMessagesBlock />
 
 						</div>					
 
@@ -57,4 +64,12 @@ class Messages extends Component{
 		)
 	}
 }
-export default Messages;
+
+const mapStateToProps = (state) => {
+  return {
+  	dialog: state.dialog
+  };
+}
+const WrappedMessages = connect(mapStateToProps)(Messages);
+
+export default WrappedMessages;

@@ -45,7 +45,7 @@ class TopTags extends Component{
             </Link>
             <Link className="nav-bar"
                   to="/messages"> 
-                  messeges
+                  messages
             </Link>
             <Link className="nav-bar"
                   to="/profile"> 

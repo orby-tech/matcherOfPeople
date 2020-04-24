@@ -206,6 +206,59 @@ function build (opts) {
 
     fastify.route({
       method: 'POST',
+      url: '/userdialogs',
+      preHandler: fastify.auth([fastify.verifyJWTandLevelDB]),
+      handler: (req, reply) => {
+        req.log.info('Auth route')
+        let query = {user: req.body.user}
+        MongoClient.connect(urldb)
+          .then((db) => db.db("tagdb"))
+          .then((dbo) => dbo.collection("userdialogs").find(query, { projection: { _id: 0, user: 0 }}).toArray())
+          .catch((err) => {})
+          .then((result) => {
+            console.log(result)
+            reply.send(JSON.stringify(result))
+          })
+      }
+    })
+    fastify.route({
+      method: 'POST',
+      url: '/dialog',
+      preHandler: fastify.auth([fastify.verifyJWTandLevelDB]),
+      handler: (req, reply) => {
+        req.log.info('Auth route')
+        let query = {dialog: req.body.dialog}
+        MongoClient.connect(urldb)
+          .then((db) => db.db("tagdb"))
+          .then((dbo) => dbo.collection("dialog").find(query, { projection: { messages: 1, _id: 0 }}).toArray())
+          .catch((err) => {})
+          .then((result) => {
+            console.log(result)
+            reply.send(JSON.stringify(result))
+          })
+      }
+    })
+    fastify.route({
+      method: 'POST',
+      url: '/dialogupdate',
+      preHandler: fastify.auth([fastify.verifyJWTandLevelDB]),
+      handler: (req, reply) => {
+        req.log.info('Auth route')
+        let query = {dialog: req.body.dialog}
+        let newvalues  =  { $set: { dialog: req.body.dialog, messages: req.body.messages } };
+
+        MongoClient.connect(urldb)
+          .then((db) => db.db("tagdb"))
+          .then((dbo) => dbo.collection("dialog").updateOne(query, newvalues))
+          .catch((err) => {})
+          .then((result) => {
+            console.log(result)
+            reply.send(JSON.stringify(result))
+          })
+      }
+    })
+    fastify.route({
+      method: 'POST',
       url: '/usertaguppdate',
       preHandler: fastify.auth([fastify.verifyJWTandLevelDB]),
       handler: (req, reply) => {
@@ -216,6 +269,8 @@ function build (opts) {
 
       }
     })
+
+
     fastify.route({
       method: 'POST',
       url: '/usercontactsuppdate',
@@ -235,6 +290,8 @@ function build (opts) {
           })
       }
     })
+
+
     fastify.route({
       method: 'POST',
       url: '/userprivatetaguppdate',
@@ -254,6 +311,8 @@ function build (opts) {
           })
       }
     })
+
+
     fastify.route({
       method: 'POST',
       url: '/toptags',

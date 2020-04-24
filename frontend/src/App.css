@@ -65,7 +65,6 @@ h1 {
 }
 h3 {
   width: 100%;
-  float: left;
 }
 .tag-area {
   width: 100%;
@@ -121,4 +120,61 @@ margin-left: 60px;
 }
 .mes {
   display: inline-block;
+}
+
+
+
+.dialogs_block {
+
+  display: grid;
+
+}
+.dialog_button {
+  width: 1fr;
+  height: 40px;
+}
+
+.dialog_button:hover {
+  font-size: 20px;
+  background-color: #C0C0C0;
+  padding: 5px;
+}
+
+.message {
+  display: inline-block;
+  height: 26px;
+  border-radius: 13px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border: 1px solid #7FFFD4;
+  background-color: #7FFFD4;
+  margin-left: 10px;
+  float: left;
+}
+.message_rigth {
+  display: inline-block;
+  height: 26px;
+  border-radius: 13px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border: 1px solid #7FFFD4;
+  background-color: #7FFFD4;
+  float: right;
+
+}
+.messages_block {
+  display: grid;
+  background-color: #FFEBCD;
+
+  border-radius: 20px;
+
+}
+.message_string {
+  height: auto;
+  padding: 10px;
+}
+
+.block_new_message {
+  margin-left: 20px;
+  margin-bottom: 40px;
 }
