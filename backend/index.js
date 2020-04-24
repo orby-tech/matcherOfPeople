@@ -150,7 +150,27 @@ function build (opts) {
         reply.send({ hello: 'world' })
       }
     })
-
+    fastify.route({
+      method: 'POST',
+      url: '/finduser',
+      preHandler: fastify.auth([fastify.verifyJWTandLevelDB]),
+      handler: (req, reply) => {
+        req.log.info('Auth route')
+        let query = {user: req.body.user}
+        MongoClient.connect(urldb)
+          .then((db) => db.db("tagdb"))
+          .then((dbo) => dbo.collection("userscharacter").find(query).toArray())
+          .catch((err) => {})
+          .then((result) => {
+            console.log(req.body.user)
+            if (result.length > 0){              
+              reply.send("no empty")
+            } else {
+              reply.send("empty")
+            }
+          })
+      }
+    })
 
     fastify.route({
       method: 'POST',
@@ -163,10 +183,7 @@ function build (opts) {
           .then((db) => db.db("tagdb"))
           .then((dbo) => dbo.collection("usertag").find(query, { projection: { _id: 0, user: 0 }}).toArray())
           .catch((err) => {})
-          .then((result) => {
-            console.log(result)
-            reply.send(JSON.stringify(result))
-          })
+          .then((result) => reply.send(JSON.stringify(result)))
       }
     })
     fastify.route({
@@ -180,10 +197,7 @@ function build (opts) {
           .then((db) => db.db("tagdb"))
           .then((dbo) => dbo.collection("userprivatetag").find(query, { projection: { _id: 0, user: 0 }}).toArray())
           .catch((err) => {})
-          .then((result) => {
-            console.log(result)
-            reply.send(JSON.stringify(result))
-          })
+          .then((result) => reply.send(JSON.stringify(result)))
       }
     })    
     fastify.route({
@@ -197,10 +211,7 @@ function build (opts) {
           .then((db) => db.db("tagdb"))
           .then((dbo) => dbo.collection("usercontact").find(query, { projection: { _id: 0, user: 0 }}).toArray())
           .catch((err) => {})
-          .then((result) => {
-            console.log(result)
-            reply.send(JSON.stringify(result))
-          })
+          .then((result) => reply.send(JSON.stringify(result)))
       }
     })
 
@@ -215,10 +226,7 @@ function build (opts) {
           .then((db) => db.db("tagdb"))
           .then((dbo) => dbo.collection("userdialogs").find(query, { projection: { _id: 0, user: 0 }}).toArray())
           .catch((err) => {})
-          .then((result) => {
-            console.log(result)
-            reply.send(JSON.stringify(result))
-          })
+          .then((result) => reply.send(JSON.stringify(result)))
       }
     })
     fastify.route({
@@ -232,10 +240,7 @@ function build (opts) {
           .then((db) => db.db("tagdb"))
           .then((dbo) => dbo.collection("dialog").find(query, { projection: { messages: 1, _id: 0 }}).toArray())
           .catch((err) => {})
-          .then((result) => {
-            console.log(result)
-            reply.send(JSON.stringify(result))
-          })
+          .then((result) => reply.send(JSON.stringify(result)))
       }
     })
     fastify.route({
@@ -251,12 +256,10 @@ function build (opts) {
           .then((db) => db.db("tagdb"))
           .then((dbo) => dbo.collection("dialog").updateOne(query, newvalues))
           .catch((err) => {})
-          .then((result) => {
-            console.log(result)
-            reply.send(JSON.stringify(result))
-          })
+          .then((result) => reply.send(JSON.stringify(result)))
       }
     })
+
     fastify.route({
       method: 'POST',
       url: '/usertaguppdate',
@@ -285,7 +288,6 @@ function build (opts) {
           .then((dbo) => dbo.collection("usercontact").updateOne(query, newvalues))
           .catch((err) => {})
           .then((result) => {
-            console.log(result)
             reply.send("update")
           })
       }
@@ -306,7 +308,6 @@ function build (opts) {
           .then((dbo) => dbo.collection("userprivatetag").updateOne(query, newvalues))
           .catch((err) => {})
           .then((result) => {
-            console.log(result)
             reply.send("update")
           })
       }
@@ -344,7 +345,6 @@ function build (opts) {
       method: 'POST',
       url: '/auth-multiple',
       preHandler: fastify.auth([
-        // Only one of these has to pass
         fastify.verifyJWTandLevelDB,
         fastify.verifyUserAndPassword
       ]),

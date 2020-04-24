@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
-import { BrowserRouter } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import  React, { Component } from 'react';
+import  { Route,
+					Redirect } from 'react-router-dom';
+import  { BrowserRouter } from 'react-router-dom';
+import  { Link } from 'react-router-dom';
 
 import  DialogsBlock from './DialogsBlock';
 import WrappedMessagesBlock from './MessegesBlock';
@@ -13,6 +14,8 @@ class Messages extends Component{
 
 
 	render(){
+		if (!localStorage.getItem('token')){return <Redirect to='/' />}
+
 		return(
 			<>
 				<h1>

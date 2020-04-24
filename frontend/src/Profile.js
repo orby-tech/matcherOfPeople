@@ -1,5 +1,6 @@
 import  React, { Component } from 'react';
-import  { Route } from 'react-router-dom';
+import  { Route,
+					Redirect } from 'react-router-dom';
 import  { BrowserRouter } from 'react-router-dom';
 import  { Link } from 'react-router-dom';
 
@@ -13,8 +14,11 @@ class Profile extends Component{
 
 
 	render(){
+		if (!localStorage.getItem('token')){return <Redirect to='/' />}
 		return(
 			<>
+					
+
 				<h1>
 				Your profile
 				</h1>

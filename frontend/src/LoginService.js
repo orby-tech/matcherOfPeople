@@ -4,6 +4,7 @@ import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
+import  { Redirect } from 'react-router-dom';
 
 import './App.css';
 
@@ -51,7 +52,7 @@ class signLogApp extends Component {
         console.log(result.token)
         localStorage.setItem('username', data.user);
         localStorage.setItem('token', result.token);
-
+        window.location.reload();
 
       })
       .catch(error => {
@@ -64,19 +65,22 @@ class signLogApp extends Component {
     e.preventDefault();
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-
     var raw = JSON.stringify(data);
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: raw,
-      redirect: 'follow'
-    };
-    console.log(raw)
-    fetch('http://127.0.0.1:8000/register', requestOptions)
+    var requestOptions = { method: 'POST',  headers: myHeaders,   body: raw,  redirect: 'follow'};
+    fetch('http://127.0.0.1:8000/finduser', requestOptions)
       .then(response => response.json())
-      .then(result => {        
-        console.log(result.token)
+      .then(result => {
+        if (result.answer === "empty"){    
+          fetch('http://127.0.0.1:8000/register', requestOptions)
+            .then(response => response.json())
+            .then(result => {        
+              console.log(result.token)
+              window.location.reload();
+          })
+            .catch(error => console.log('error', error));
+        } else{
+          console.log("Ups")
+        }
     })
       .catch(error => console.log('error', error));
   };
@@ -93,6 +97,7 @@ class signLogApp extends Component {
   };
 
   render() {
+    if (localStorage.getItem('token')){return <Redirect to='/Profile' />}
 
 
     let form;
