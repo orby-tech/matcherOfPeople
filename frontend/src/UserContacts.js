@@ -89,7 +89,7 @@ class UserContacts extends Component{
 	      <div className="block_input">
 		      <input 
 		      	className="input_append"
-		      	placeholder="append tags"
+		      	placeholder="append your contacts"
 		      	id="pablicContactAppend"
 		      	type="text" />	      	
 		      <img 

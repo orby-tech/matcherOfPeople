@@ -1,5 +1,8 @@
 @import  'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css';
-
+body {
+  
+  background-color: #FFEBCD;
+}
 .App {
   text-align: center;
 }
@@ -157,15 +160,13 @@ margin-left: 60px;
   border-radius: 13px;
   padding-left: 8px;
   padding-right: 8px;
-  border: 1px solid #7FFFD4;
-  background-color: #7FFFD4;
+  border: 1px solid #98FB98;
+  background-color: #98FB98;
   float: right;
 
 }
 .messages_block {
   display: grid;
-  background-color: #FFEBCD;
-
   border-radius: 20px;
 
 }

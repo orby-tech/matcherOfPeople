@@ -44,7 +44,7 @@ class Messages extends Component{
 						<div className="messeges mes">
 							<h3>{
 								this.props.dialog 
-									? this.props.dialog
+									? "Dialog №" + this.props.dialog
 									: "Messages"
 							}
 							</h3>
