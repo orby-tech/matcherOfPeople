@@ -17,7 +17,7 @@ class UserTags extends Component{
 		myHeaders.append("auth", localStorage.getItem('token'));
     myHeaders.append("Content-Type", "application/json");
 		var raw = JSON.stringify({user: localStorage.getItem('username'), tag: this.state.tags});
-		console.log(this.state.tags)
+		console.log(raw)
 		var requestOptions = {
       method: 'POST',
       headers: myHeaders,
@@ -59,6 +59,7 @@ class UserTags extends Component{
     fetch('http://localhost:8000/usertag', requestOptions)
       .then(response => response.json())
       .then(result => {
+      	console.log(result)
 	      if (result[0].tag){
 	      	this.setState({
 	      		tags: result[0].tag
@@ -80,6 +81,7 @@ class UserTags extends Component{
 	      	<img 
 	      		className="delButton"	      		
 	      		onClick={(e) => this.handleDelete(e, c)}
+	      		alt="plus"
 	      		src={del}/>
 	      	</div> 
 	      )} 
@@ -92,6 +94,7 @@ class UserTags extends Component{
 		      <img 
 	      		className="appendButton"	      		
 	      		onClick={(e) => this.handleAppend(e)}
+	      		alt="plus"
 	      		src={append}/>
 	      </div>
 			</>

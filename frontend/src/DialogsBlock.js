@@ -16,11 +16,10 @@ class DialogsBlock extends Component{
   handleOpen(e, c) {
     this.props.dispatch(changeDialog(c))
   }
-  handleWriteMessage(e){
+  handleNewDialog(e){
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("auth", localStorage.getItem('token'));
-
     var raw = JSON.stringify({"user": localStorage.getItem('username')});
     var requestOptions = {
       method: 'POST',
@@ -66,7 +65,8 @@ class DialogsBlock extends Component{
         <div className="new_dialog_button">
           <img 
             className="appendDialogButton"            
-            onClick={(e) => this.handleWriteMessage(e)}
+            onClick={(e) => this.handleNewDialog(e)}
+            alt="plus"
             src={append}/>
         </div>
 				<div className="dialogs_block">

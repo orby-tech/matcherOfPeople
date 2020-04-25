@@ -89,6 +89,7 @@ class MessagesBlock extends Component{
           <img 
             className="appendButton"            
             onClick={(e) => this.handleWriteMessage(e)}
+            alt="plus"
             src={append}/>
         </div>
       </div>

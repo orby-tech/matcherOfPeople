@@ -4,6 +4,11 @@ const Fastify = require('fastify')
 var MongoClient = require('mongodb').MongoClient;
 var urldb = "mongodb://localhost:27017/";
 
+const newDialog = (req) => {
+
+
+  return("Hello")
+}
 
 const promise1 = new Promise(function(resolve, reject) {
   MongoClient.connect(urldb, function(err, db) {
@@ -154,7 +159,7 @@ function build (opts) {
                     dbo.collection("usertag").insertOne({user: req.body.user, tag: []})
                     dbo.collection("userdialogs").insertOne({user: req.body.user, tag: []})
                     dbo.collection("usercontact").insertOne({user: req.body.user, tag: []})
-
+                    dbo.collection("userscharacter").insertOne({user: req.body.user, quality: 0.7, activity: Date.now(new Date())})
                     })
                   .catch((err) => {})
                   .then((result) => reply.send({ token }))
@@ -172,13 +177,6 @@ function build (opts) {
         reply.send({ hello: 'world' })
       }
     })
-    fastify.route({
-      method: 'POST',
-      url: '/finduser',
-      handler: (req, reply) => {
-        
-      }
-    })
 
     fastify.route({
       method: 'POST',
@@ -189,9 +187,14 @@ function build (opts) {
         let query = {user: req.body.user}
         MongoClient.connect(urldb)
           .then((db) => db.db("tagdb"))
+          .then((dbo) => dbo.collection("userscharacter").updateOne(query, { $set: { activity: Date.now(new Date())}}))
+
+        MongoClient.connect(urldb)
+          .then((db) => db.db("tagdb"))
           .then((dbo) => dbo.collection("usertag").find(query, { projection: { _id: 0, user: 0 }}).toArray())
           .catch((err) => {})
           .then((result) => reply.send(JSON.stringify(result)))
+
       }
     })
     fastify.route({
@@ -232,6 +235,10 @@ function build (opts) {
         let query = {user: req.body.user}
         MongoClient.connect(urldb)
           .then((db) => db.db("tagdb"))
+          .then((dbo) => dbo.collection("userscharacter").updateOne(query, { $set: { activity: Date.now(new Date())}}))
+
+        MongoClient.connect(urldb)
+          .then((db) => db.db("tagdb"))
           .then((dbo) => dbo.collection("userdialogs").find(query, { projection: { _id: 0, user: 0 }}).toArray())
           .catch((err) => {})
           .then((result) => reply.send(JSON.stringify(result)))
@@ -257,8 +264,8 @@ function build (opts) {
       preHandler: fastify.auth([fastify.verifyJWTandLevelDB]),
       handler: (req, reply) => {
         req.log.info('Auth route')
-        newDialog()
-        reply.send("hello")
+        
+        reply.send(newDialog(req))
       }
     })
     fastify.route({
@@ -282,12 +289,17 @@ function build (opts) {
       method: 'POST',
       url: '/usertaguppdate',
       preHandler: fastify.auth([fastify.verifyJWTandLevelDB]),
-      handler: (req, reply) => {
-        console.log(req.body)
-        req.log.info('Auth route')
-        updateTag(req.body.user, req.body.tag)
-        reply.send("update")
 
+      handler: (req, reply) => {
+        let query = {user: req.body.user}
+        req.log.info('Auth route')
+        MongoClient.connect(urldb)
+          .then((db) => db.db("tagdb"))
+          .then((dbo) => dbo.collection("usertag").updateOne(query, { $set: {tag: req.body.tag}}))
+          .catch((err) => {})
+          .then((result) => {
+            reply.send("update")
+          })
       }
     })
 
@@ -351,6 +363,10 @@ function build (opts) {
       beforeHandler: async (request, reply) => {
       },
       handler: async (request, reply) => {
+        MongoClient.connect(urldb)
+          .then((db) => db.db("tagdb"))
+          .then((dbo) => dbo.collection("userscharacter").updateOne(query, { $set: { activity: Date.now(new Date())}}))
+
         promise1.then(function(value) {
           console.log(value);
 

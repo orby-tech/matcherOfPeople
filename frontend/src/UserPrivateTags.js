@@ -80,6 +80,7 @@ class UserPrivateTags extends Component{
 	      	<img 
 	      		className="delButton"	      		
 	      		onClick={(e) => this.handleDelete(e, c)}
+	      		alt="plus"
 	      		src={del}/>
 	      	</div> 
 	      )} 
@@ -92,6 +93,7 @@ class UserPrivateTags extends Component{
 		      <img 
 	      		className="appendButton"	      		
 	      		onClick={(e) => this.handleAppend(e)}
+	      		alt="plus"
 	      		src={append}/>
 	      </div>
 			</>
