@@ -32,7 +32,6 @@ function updateTag(user, tag) {
 };
 
 
-
 function build (opts) {
   const fastify = Fastify(opts)
 
@@ -126,19 +125,42 @@ function build (opts) {
         }
       },
       handler: (req, reply) => {
-        req.log.info('Creating new user')
-        fastify.level.put(req.body.user, req.body.password, onPut)
+        req.log.info('Auth route')
+        let query = {user: req.body.user}
+        MongoClient.connect(urldb)
+          .then((db) => db.db("tagdb"))
+          .then((dbo) => dbo.collection("userscharacter").find(query).toArray())
+          .catch((err) => {})
+          .then((result) => {
+            console.log(req.body.user)
+            if (result.length > 0){              
+              reply.send("no empty")
+            } else {
+              req.log.info('Creating new user')
+              fastify.level.put(req.body.user, req.body.password, onPut)
 
-        function onPut (err) {
-          if (err) return reply.send(err)
-          fastify.jwt.sign(req.body, onToken)
-        }
+              function onPut (err) {
+                if (err) return reply.send(err)
+                fastify.jwt.sign(req.body, onToken)
+              }
 
-        function onToken (err, token) {
-          if (err) return reply.send(err)
-          req.log.info('User created')
-          reply.send({ token })
-        }
+              function onToken (err, token) {
+                if (err) return reply.send(err)
+                req.log.info('User created')
+                MongoClient.connect(urldb)
+                  .then((db) => db.db("tagdb"))
+                  .then((dbo) => {
+                    dbo.collection("userprivatetag").insertOne({user: req.body.user, tag: []})
+                    dbo.collection("usertag").insertOne({user: req.body.user, tag: []})
+                    dbo.collection("userdialogs").insertOne({user: req.body.user, tag: []})
+                    dbo.collection("usercontact").insertOne({user: req.body.user, tag: []})
+
+                    })
+                  .catch((err) => {})
+                  .then((result) => reply.send({ token }))
+              }
+            }
+          })        
       }
     })
    
@@ -153,22 +175,8 @@ function build (opts) {
     fastify.route({
       method: 'POST',
       url: '/finduser',
-      preHandler: fastify.auth([fastify.verifyJWTandLevelDB]),
       handler: (req, reply) => {
-        req.log.info('Auth route')
-        let query = {user: req.body.user}
-        MongoClient.connect(urldb)
-          .then((db) => db.db("tagdb"))
-          .then((dbo) => dbo.collection("userscharacter").find(query).toArray())
-          .catch((err) => {})
-          .then((result) => {
-            console.log(req.body.user)
-            if (result.length > 0){              
-              reply.send("no empty")
-            } else {
-              reply.send("empty")
-            }
-          })
+        
       }
     })
 
@@ -241,6 +249,16 @@ function build (opts) {
           .then((dbo) => dbo.collection("dialog").find(query, { projection: { messages: 1, _id: 0 }}).toArray())
           .catch((err) => {})
           .then((result) => reply.send(JSON.stringify(result)))
+      }
+    })
+    fastify.route({
+      method: 'POST',
+      url: '/newdialog',
+      preHandler: fastify.auth([fastify.verifyJWTandLevelDB]),
+      handler: (req, reply) => {
+        req.log.info('Auth route')
+        newDialog()
+        reply.send("hello")
       }
     })
     fastify.route({

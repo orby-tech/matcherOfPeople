@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Nav from './Nav';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
-import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import  { Redirect } from 'react-router-dom';
 
@@ -67,22 +66,16 @@ class signLogApp extends Component {
     myHeaders.append("Content-Type", "application/json");
     var raw = JSON.stringify(data);
     var requestOptions = { method: 'POST',  headers: myHeaders,   body: raw,  redirect: 'follow'};
-    fetch('http://127.0.0.1:8000/finduser', requestOptions)
+    fetch('http://127.0.0.1:8000/register', requestOptions)
       .then(response => response.json())
-      .then(result => {
-        if (result.answer === "empty"){    
-          fetch('http://127.0.0.1:8000/register', requestOptions)
-            .then(response => response.json())
-            .then(result => {        
-              console.log(result.token)
-              window.location.reload();
-          })
-            .catch(error => console.log('error', error));
-        } else{
-          console.log("Ups")
-        }
-    })
+      .then(result => {        
+        console.log(result)
+
+        localStorage.setItem('username', data.user);
+        localStorage.setItem('token', result.token);
+      })
       .catch(error => console.log('error', error));
+
   };
 
   handle_logout = () => {

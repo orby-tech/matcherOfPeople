@@ -1,7 +1,4 @@
 import  React, { Component } from 'react';
-import  { Route } from 'react-router-dom';
-import  { BrowserRouter } from 'react-router-dom';
-import  { Link } from 'react-router-dom';
 
 import  { connect } from 'react-redux'
 import  { changeDialog } from './redux/actions'
@@ -19,6 +16,22 @@ class DialogsBlock extends Component{
   handleOpen(e, c) {
     this.props.dispatch(changeDialog(c))
   }
+  handleWriteMessage(e){
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("auth", localStorage.getItem('token'));
+
+    var raw = JSON.stringify({"user": localStorage.getItem('username')});
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+    fetch('http://localhost:8000/newdialog', requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+  }
 	componentDidMount(){
 		var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -34,9 +47,15 @@ class DialogsBlock extends Component{
     fetch('http://localhost:8000/userdialogs', requestOptions)
       .then(response => response.json())
       .then(result => {
-      	this.setState({
-      		messages: result[0].dialog
-      	})
+        if (result[0].dialog){
+        	this.setState({
+        		messages: result[0].dialog
+        	})
+        } else {
+          this.setState({
+            messages: []
+          })
+        }
       })
 	}
 
@@ -51,10 +70,10 @@ class DialogsBlock extends Component{
             src={append}/>
         </div>
 				<div className="dialogs_block">
-        {this.state.messages.map( c  =>
+        { this.state.messages.map( c  =>
           <div className="dialog_button">
             <td onClick={(e) => this.handleOpen(e, c)} >{c}</td>
-          </div>)} 
+          </div>)}
 			  </div>
 
 			</>
