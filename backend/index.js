@@ -5,9 +5,6 @@ var MongoClient = require('mongodb').MongoClient;
 var urldb = "mongodb://localhost:27017/";
 
 const newDialog = (req) => {
-
-
-  return("Hello")
 }
 
 const promise1 = new Promise(function(resolve, reject) {
@@ -159,7 +156,7 @@ function build (opts) {
                     dbo.collection("usertag").insertOne({user: req.body.user, tag: []})
                     dbo.collection("userdialogs").insertOne({user: req.body.user, tag: []})
                     dbo.collection("usercontact").insertOne({user: req.body.user, tag: []})
-                    dbo.collection("userscharacter").insertOne({user: req.body.user, quality: 0.7, activity: Date.now(new Date())})
+                    dbo.collection("userscharacter").insertOne({user: req.body.user, quality: 0.7, blacklist: [], activity: Date.now(new Date())})
                     })
                   .catch((err) => {})
                   .then((result) => reply.send({ token }))
