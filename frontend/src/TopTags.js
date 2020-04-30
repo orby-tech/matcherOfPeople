@@ -6,7 +6,8 @@ class TopTags extends Component{
   constructor(props) {
       super(props);
       this.state  = {
-          tags: []
+          tags: [],
+          allcount: 0
       };
   }
 	componentDidMount(){
@@ -19,19 +20,27 @@ class TopTags extends Component{
       body: raw,
       redirect: 'follow'
     };
-    fetch('http://localhost:8000/toptags', requestOptions)
+    fetch('http://api.getteam.space/toptags', requestOptions)
       .then(response => response.json())
       .then(result => {
+        let sum = 0
+        for (let i = 0; i < result.length; i++){ 
+          sum += parseInt(result[i].count, 10) 
+        }
       	this.setState({
-      		tags: result
+      		tags: result,
+          allcount: sum
       	})
       })
 	}
+  calculateWidth (count) {
+    count = count / this.state.allcount * 500
+    return count.toString() + "px"
+  }
 
 
 	render(){
     if (!localStorage.getItem('token')){return <Redirect to='/' />}
-
 		return(
 			<>
 				<h1>
@@ -69,6 +78,7 @@ class TopTags extends Component{
 
                   <td>{c.tag}</td>
                   <td>{c.count}</td>
+                  <td><div className="counting" style={{width: this.calculateWidth(c.count)}} /></td>
                 </tr>)} 
 
               </tbody>

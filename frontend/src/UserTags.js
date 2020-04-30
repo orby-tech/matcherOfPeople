@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import  { Redirect } from 'react-router-dom';
 
 import del from "./img/delete.png"
 import append from "./img/plus.png"
@@ -24,7 +25,7 @@ class UserTags extends Component{
       body: raw,
       redirect: 'follow'
     };
-    fetch('http://localhost:8000/usertaguppdate', requestOptions)
+    fetch('http://api.getteam.space/usertaguppdate', requestOptions)
       .then(response => response.json())
       .then(result => {
       })
@@ -56,11 +57,16 @@ class UserTags extends Component{
       body: raw,
       redirect: 'follow'
     };
-    fetch('http://localhost:8000/usertag', requestOptions)
+    fetch('http://api.getteam.space/usertag', requestOptions)
       .then(response => response.json())
       .then(result => {
-      	console.log(result)
-	      if (result[0].tag){
+      	if (result.statusCode){
+      		if (result.statusCode === 401){
+		        alert("Relogin please")
+		        localStorage.removeItem("token")
+		        window.location.reload();
+      		}
+      	} else if (result[0].tag){
 	      	this.setState({
 	      		tags: result[0].tag
 	      	})
@@ -70,10 +76,14 @@ class UserTags extends Component{
 	      	})
 	      }
       })
+      .catch(error => {
+      });
 	}
 
 
 	render(){
+    if (!localStorage.getItem('token')){return <Redirect to='/' />}
+
 		return(
 			<>
 				{this.state.tags.map( (c)  =>

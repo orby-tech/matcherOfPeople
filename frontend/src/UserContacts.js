@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import  { Redirect } from 'react-router-dom';
 
 import del from "./img/delete.png"
 import append from "./img/plus.png"
@@ -24,7 +25,7 @@ class UserContacts extends Component{
       body: raw,
       redirect: 'follow'
     };
-    fetch('http://localhost:8000/usercontactsuppdate', requestOptions)
+    fetch('http://api.getteam.space/usercontactsuppdate', requestOptions)
       .then(response => response.json())
       .then(result => {
       })
@@ -56,10 +57,14 @@ class UserContacts extends Component{
       body: raw,
       redirect: 'follow'
     };
-    fetch('http://localhost:8000/usercontacts', requestOptions)
+    fetch('http://api.getteam.space/usercontacts', requestOptions)
       .then(response => response.json())
       .then(result => {
-	      if (result[0].tag.length !==0){
+      	if (result.statusCode){
+      		if (result.statusCode === 401){
+        		localStorage.removeItem("token")
+      		}
+      	} else if (result[0].tag.length !==0){
 	      	this.setState({
 	      		tags: result[0].tag
 	      	})
@@ -73,6 +78,8 @@ class UserContacts extends Component{
 
 
 	render(){
+	  if (!localStorage.getItem('token')){return <Redirect to='/' />}
+
 		return(
 			<>
 				{this.state.tags.map( (c)  =>

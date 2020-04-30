@@ -20,16 +20,8 @@ class signLogApp extends Component {
   }
 
   componentDidMount() {
-    if (this.state.logged_in) {
-      fetch('http://api.orby.site/user/obtain_token/', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      })
-        .then(res => res.json())
-        .then(json => {
-          this.setState({ username: json.name });
-        });
+    if (localStorage.getItem('token')) {
+      console.log("log")
     }
   }
 
@@ -45,7 +37,7 @@ class signLogApp extends Component {
       body: raw,
       redirect: 'follow'
     };
-    fetch('http://127.0.0.1:8000/auth-multiple', requestOptions)
+    fetch('http://api.getteam.space/auth-multiple', requestOptions)
       .then(response => response.json())
       .then(result => {
         console.log(result.token)
@@ -66,13 +58,15 @@ class signLogApp extends Component {
     myHeaders.append("Content-Type", "application/json");
     var raw = JSON.stringify(data);
     var requestOptions = { method: 'POST',  headers: myHeaders,   body: raw,  redirect: 'follow'};
-    fetch('http://127.0.0.1:8000/register', requestOptions)
+    fetch('http://api.getteam.space/register', requestOptions)
       .then(response => response.json())
       .then(result => {        
         console.log(result)
 
         localStorage.setItem('username', data.user);
         localStorage.setItem('token', result.token);
+        window.location.reload();
+
       })
       .catch(error => console.log('error', error));
 

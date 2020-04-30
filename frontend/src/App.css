@@ -192,3 +192,8 @@ margin-left: 60px;
 .new_dialog_text {
   margin-top:2px;
 }
+.counting {
+  height: 6px;
+  border-radius: 3px;
+  background-color: blue;
+}

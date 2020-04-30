@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import  { Redirect } from 'react-router-dom';
 
 import del from "./img/delete.png"
 import append from "./img/plus.png"
@@ -24,7 +25,7 @@ class UserPrivateTags extends Component{
       body: raw,
       redirect: 'follow'
     };
-    fetch('http://localhost:8000/userprivatetaguppdate', requestOptions)
+    fetch('http://api.getteam.space/userprivatetaguppdate', requestOptions)
       .then(response => response.json())
       .then(result => {
       })
@@ -56,10 +57,14 @@ class UserPrivateTags extends Component{
       body: raw,
       redirect: 'follow'
     };
-    fetch('http://localhost:8000/userprivatetag', requestOptions)
+    fetch('http://api.getteam.space/userprivatetag', requestOptions)
       .then(response => response.json())
       .then(result => {
-	      if (result[0].tag){
+      	if (result.statusCode){
+      		if (result.statusCode === 401){
+        		localStorage.removeItem("token")
+      		}
+      	} else if (result[0].tag){
 	      	this.setState({
 	      		tags: result[0].tag
 	      	})
@@ -73,6 +78,8 @@ class UserPrivateTags extends Component{
 
 
 	render(){
+    if (!localStorage.getItem('token')){return <Redirect to='/' />}
+
 		return(
 			<>
 				{this.state.tags.map( (c)  =>

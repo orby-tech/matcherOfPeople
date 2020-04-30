@@ -22,7 +22,7 @@ class MessagesBlock extends Component{
       body: raw,
       redirect: 'follow'
     };
-    fetch('http://localhost:8000/dialogupdate', requestOptions)
+    fetch('http://api.getteam.space/dialogupdate', requestOptions)
       .then(response => response.json())
       .then(result => {
       })
@@ -48,9 +48,10 @@ class MessagesBlock extends Component{
       body: raw,
       redirect: 'follow'
     };
-    fetch('http://localhost:8000/dialog', requestOptions)
+    fetch('http://api.getteam.space/dialog', requestOptions)
       .then(response => response.json())
       .then(result => {
+        console.log(result[0])
         this.setState({
           messages: result[0].messages
         })
