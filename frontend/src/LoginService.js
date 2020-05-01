@@ -114,10 +114,6 @@ class signLogApp extends Component {
               : 'Please Log In'}
           </h3>
         </div>
-        <Link 
-              to="/profile">
-              Temp href to profile
-        </Link>
       </>
     );
   }

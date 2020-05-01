@@ -276,95 +276,100 @@ function build (opts) {
               .then((dbo) => dbo.collection("userscharacter").find(query).toArray())  // Запросим список использованных контактов
               .catch((err) => {console.log(err)})
               .then((result_blacklist) => {
-                console.log("result_blacklist",result_blacklist)
-                MongoClient.connect(urldb)
-                  .then(db => db.db("tagdb"))
-                  .then(dbo => dbo
-                    .collection("userscharacter")         // Запросим данные некоторого колличества людей которые рядом по качеству и 
-                    .find({ $and:
-                      [{activity: { $gte: now.setDate(now.getDate() - 2) }},
-                      {quality: {$lte: result_blacklist[0].quality}}]
-                    },
-                      { projection: { _id:0, activity:0}})
-                    .limit(10)
-                    .toArray())
-                  .catch((err) => {console.log(err)})
-                  .then((result) => {
-                      let arr_quality = []
-                      let arr_user = []
-                      console.log("result_blacklist[0].blacklist",result_blacklist[0].blacklist)
-                      console.log("result",result)
-                      for (let i = 0; i < result.length; i++){
+                if(result_blacklist != undefined 
+                  && result_blacklist[0] != undefined 
+                  && result_blacklist[0].quality != undefined){
+                  MongoClient.connect(urldb)
+                    .then(db => db.db("tagdb"))
+                    .then(dbo => dbo
+                      .collection("userscharacter")         // Запросим данные некоторого колличества людей которые рядом по качеству и 
+                      .find({ $and:
+                        [{activity: { $gte: now.setDate(now.getDate() - 2) }},
+                        {quality: {$lte: result_blacklist[0].quality}}]
+                      },
+                        { projection: { _id:0, activity:0}})
+                      .limit(10)
+                      .toArray())
+                    .catch((err) => {console.log(err)})
+                    .then((result) => {
+                        let arr_quality = []
+                        let arr_user = []
+                        console.log("result_blacklist[0].blacklist",result_blacklist[0].blacklist)
+                        console.log("result",result)
+                        for (let i = 0; i < result.length; i++){
 
-                        if (!(result_blacklist[0].blacklist.indexOf(result[i].user) >= 0 )) {
-                          arr_quality.push(result[i].quality)
-                          arr_user.push(result[i].user)
+                          if (!(result_blacklist[0].blacklist.indexOf(result[i].user) >= 0 )) {
+                            arr_quality.push(result[i].quality)
+                            arr_user.push(result[i].user)
+                          }
                         }
-                      }
-                      console.log("arr_quality", arr_quality)
-                      console.log("arr_user", arr_user)
-                      MongoClient.connect(urldb)
-                        .then((db) => db.db("tagdb"))
-                        .then((dbo) => dbo
-                          .collection("usertag")
-                          .find({ user: {$in: arr_user} } ,{projection: { _id:0}})
-                          .limit(10)
-                          .toArray())
-                        .catch((err) => {console.log(err)})
-                        .then((result_tag) => {
-                          
-                          let array_of_counts = []
-                          let array_of_names =[]
-                          for (let i = 0; i < result.length; i++) {
-                            if (result_tag[i] !== undefined && result_tag[i].user !== username) {
-                              let array_of_users_tags = result_user[0].tag
-                              let count_common_tags = array_of_users_tags.filter(function(obj) { return result_tag[i].tag.indexOf(obj) >= 0; }).length;
-                              let count_all_tags = array_of_users_tags.length + result_tag[i].tag.length - count_common_tags
-                              let index_of_location = arr_user.indexOf(result_tag[i].user)
-                              array_of_counts.push(count_common_tags / count_all_tags * arr_quality[index_of_location] * 1000)
-                              array_of_names.push(result_tag[i].user)
-                            } 
-                          }
-                          console.log("array_of_counts", array_of_counts)
-                          console.log("array_of_names" + array_of_names)
-                          let sum = 0
-                          for (let i = 0; i < array_of_counts.length; i++) {
-                            sum += array_of_counts[i]
-                          }
-                          let rnd = getRandomInt(1, sum)
-                          let i = 0  
-                          while (rnd > 0){
-                            rnd -= array_of_counts[i]
-                            i++
-                          }
-                          if(array_of_names.length > 0){
-                            MongoClient.connect(urldb)
-                              .then((db) => db.db("tagdb"))
-                              .then((dbo) => {
-                                let number_of_dialog = array_of_names[i-1] + "_" + getRandomInt(1, 100000) + "_" + username
+                        console.log("arr_quality", arr_quality)
+                        console.log("arr_user", arr_user)
+                        MongoClient.connect(urldb)
+                          .then((db) => db.db("tagdb"))
+                          .then((dbo) => dbo
+                            .collection("usertag")
+                            .find({ user: {$in: arr_user} } ,{projection: { _id:0}})
+                            .limit(10)
+                            .toArray())
+                          .catch((err) => {console.log(err)})
+                          .then((result_tag) => {
+                            
+                            let array_of_counts = []
+                            let array_of_names =[]
+                            for (let i = 0; i < result.length; i++) {
+                              if (result_tag[i] !== undefined && result_tag[i].user !== username) {
+                                let array_of_users_tags = result_user[0].tag
+                                let count_common_tags = array_of_users_tags.filter(function(obj) { return result_tag[i].tag.indexOf(obj) >= 0; }).length;
+                                let count_all_tags = array_of_users_tags.length + result_tag[i].tag.length - count_common_tags
+                                let index_of_location = arr_user.indexOf(result_tag[i].user)
+                                array_of_counts.push(count_common_tags / count_all_tags * arr_quality[index_of_location] * 1000)
+                                array_of_names.push(result_tag[i].user)
+                              } 
+                            }
+                            console.log("array_of_counts", array_of_counts)
+                            console.log("array_of_names" + array_of_names)
+                            let sum = 0
+                            for (let i = 0; i < array_of_counts.length; i++) {
+                              sum += array_of_counts[i]
+                            }
+                            let rnd = getRandomInt(1, sum)
+                            let i = 0  
+                            while (rnd > 0){
+                              rnd -= array_of_counts[i]
+                              i++
+                            }
+                            if(array_of_names[i-1] != undefined){
+                              MongoClient.connect(urldb)
+                                .then((db) => db.db("tagdb"))
+                                .then((dbo) => {
+                                  let number_of_dialog = array_of_names[i-1] + "_" + getRandomInt(1, 100000) + "_" + username
 
-                                dbo.collection("userdialogs").update(query, {$push: {dialog: number_of_dialog}}) 
-                                dbo.collection("userscharacter").update(query, {$push: {blacklist: array_of_names[i-1]}})   
+                                  dbo.collection("userdialogs").update(query, {$push: {dialog: number_of_dialog}}) 
+                                  dbo.collection("userscharacter").update(query, {$push: {blacklist: array_of_names[i-1]}})   
 
-                                dbo.collection("userdialogs").update({user: array_of_names[i-1]}, {$push: {dialog: number_of_dialog}})
-                                dbo.collection("userscharacter").update({user: array_of_names[i-1]}, {$push: {blacklist: username}})    
+                                  dbo.collection("userdialogs").update({user: array_of_names[i-1]}, {$push: {dialog: number_of_dialog}})
+                                  dbo.collection("userscharacter").update({user: array_of_names[i-1]}, {$push: {blacklist: username}})    
 
-                                dbo.collection("dialog")
-                                  .insertOne({
-                                    dialog: number_of_dialog, 
-                                    users:[username, array_of_names[i-1]], 
-                                    messages:[["Start your chat here", "frend"]]})
-                              })   
-                              .catch((err) => {console.log(err)})
-                              .then((result_user) => {
-                                console.log(array_of_names[i-1])
-                                reply.send(array_of_names[i-1])
-                              })
-                          } else {
-                            reply.send("sorry")
-                          }
-                        })
-                    })
+                                  dbo.collection("dialog")
+                                    .insertOne({
+                                      dialog: number_of_dialog, 
+                                      users:[username, array_of_names[i-1]], 
+                                      messages:[["Start your chat here", "frend"]]})
+                                })   
+                                .catch((err) => {console.log(err)})
+                                .then((result_user) => {
+                                  console.log(array_of_names[i-1])
+                                  reply.send(array_of_names[i-1])
+                                })
+                            } else {
+                              reply.send("sorry")
+                            }
+                          })
+                      })
+                } else{
+                  reply.send("re-login")
+                }
             })
           })
 

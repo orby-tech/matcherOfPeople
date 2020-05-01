@@ -37,8 +37,16 @@ class DialogsBlock extends Component{
           console.log("sorry")
           window.location.reload()
 
-        } else{
-          window.location.reload()
+        } else if(result ==="re-login"){
+          alert("Relogin please")
+          localStorage.removeItem("token")
+          window.location.reload();
+        } else if (result.statusCode){
+          if (result.statusCode === 401){
+            alert("Relogin please")
+            localStorage.removeItem("token")
+            window.location.reload();
+          }
         }
       })
   }
