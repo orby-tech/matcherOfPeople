@@ -28,7 +28,7 @@ class MessagesBlock extends Component{
       })
   }
   handleWriteMessage(){
-    if(document.getElementById("WriteNewMessage").value) {
+    if(document.getElementById("WriteNewMessage").value && this.props.dialog != false) {
       let arr = this.state.messages
       arr.push([document.getElementById("WriteNewMessage").value, localStorage.getItem('username')])
       this.setState({messages: arr})

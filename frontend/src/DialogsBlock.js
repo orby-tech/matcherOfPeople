@@ -34,7 +34,7 @@ class DialogsBlock extends Component{
       .then(response => response.text())
       .then(result => {
         if (result === "sorry"){
-          console.log("sorry")
+          alert("Sorry, not peoples with your tags uppdate your lists")
           window.location.reload()
 
         } else if(result ==="re-login"){

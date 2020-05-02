@@ -43,7 +43,7 @@ class Profile extends Component{
 						</div>
 						
 						<div className="input-group">
-							<h3> Your pablic tags </h3>
+							<h3> Your public tags </h3>
 							<UserTags />
 						</div>
 
