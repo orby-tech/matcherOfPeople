@@ -30,8 +30,9 @@ class TopTags extends Component{
       })
 	}
   calculateWidth (count) {
-    count = count / this.state.maxCount * 500
-    return count.toString() + "px"
+    count = count / this.state.maxCount * 100
+    console.log(count.toString() + "%")
+    return Math.ceil(count).toString() + "px"
   }
   calculateColor (count) {
     let green = count / this.state.maxCount * 255
@@ -75,11 +76,10 @@ class TopTags extends Component{
 
 							<tbody>
               {this.state.tags.map( c  =>
-                <tr>
-
+                <tr className="top_tags">
                   <td>{c.tag}</td>
                   <td>{c.count}</td>
-                  <td><div className="counting" style={{width: this.calculateWidth(c.count), "background-color": this.calculateColor(c.count), }} /></td>
+                  <td> <div className="counting" style={{width: this.calculateWidth(c.count), "background-color": this.calculateColor(c.count), }}/> </td>
                 </tr>)} 
 
               </tbody>

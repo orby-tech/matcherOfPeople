@@ -4,6 +4,7 @@ import  { Link } from 'react-router-dom';
 
 import  DialogsBlock from './DialogsBlock';
 import WrappedMessagesBlock from './MessegesBlock';
+import  WrappedAboutUserBlock from './AboutUserBlock';
 
 import  { connect } from 'react-redux'
 
@@ -55,6 +56,7 @@ class Messages extends Component{
 
 						<div className="profile mes">
 							<h3>Profile</h3>
+							<WrappedAboutUserBlock />
 						</div>
 
 					</div>

@@ -118,8 +118,8 @@ margin-left: 60px;
 }
 .grid_of_dialogs {
   display: grid;
-  grid-template-columns: 0.1fr 1fr 0.1fr;
-  grid-gap: 12vw;
+  grid-template-columns: 0.1fr 1fr 0.5fr;
+  grid-gap: 2vw;
 }
 .mes {
   display: inline-block;
@@ -201,7 +201,19 @@ margin-left: 60px;
 
 .start_info{
   max-width: 500px;
-
   margin-left: auto;
   margin-right: auto;
+}
+
+.rateStar {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin-left: -2px;
+}
+.blockRateStar {
+  margin-top: -15px;
+}
+.blockPublicTags {
+  margin-top: 15px;
 }
