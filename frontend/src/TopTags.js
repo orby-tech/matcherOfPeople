@@ -23,21 +23,22 @@ class TopTags extends Component{
     fetch('http://api.getteam.space/toptags', requestOptions)
       .then(response => response.json())
       .then(result => {
-        let sum = 0
-        for (let i = 0; i < result.length; i++){ 
-          sum += parseInt(result[i].count, 10) 
-        }
       	this.setState({
       		tags: result,
-          allcount: sum
+          maxCount: result[0].count
       	})
       })
 	}
   calculateWidth (count) {
-    count = count / this.state.allcount * 500
+    count = count / this.state.maxCount * 500
     return count.toString() + "px"
   }
-
+  calculateColor (count) {
+    let green = count / this.state.maxCount * 255
+    let red = (1 - count / this.state.maxCount) * 255
+    console.log("rgb("+Math.ceil(red)+", " + Math.ceil(green) + ", 0)")
+    return "rgb("+red+", " + green + ", 0)"
+  }
 
 	render(){
     if (!localStorage.getItem('token')){return <Redirect to='/' />}
@@ -78,7 +79,7 @@ class TopTags extends Component{
 
                   <td>{c.tag}</td>
                   <td>{c.count}</td>
-                  <td><div className="counting" style={{width: this.calculateWidth(c.count)}} /></td>
+                  <td><div className="counting" style={{width: this.calculateWidth(c.count), "background-color": this.calculateColor(c.count), }} /></td>
                 </tr>)} 
 
               </tbody>
