@@ -3,6 +3,13 @@
 const Fastify = require('fastify')
 var MongoClient = require('mongodb').MongoClient;
 var urldb = "mongodb://localhost:27017/";
+var dbupdate = require('./dbupdate')
+
+const sayHi = () => new Promise((resolve, reject) => {
+  console.log("start")
+  console.log(dbupdate.dbupdate())
+})
+setTimeout(sayHi, 1000);
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;

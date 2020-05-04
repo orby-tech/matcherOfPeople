@@ -12,13 +12,16 @@ class UserPrivateTags extends Component{
           tags: []
       };
   }
-
+  componentDidUpdate(prevState) {
+	  if (this.state.tags !== prevState.tags) {
+  		this.serverTagUppdate()
+	  }
+	}
   serverTagUppdate(){
   	var myHeaders = new Headers();
 		myHeaders.append("auth", localStorage.getItem('token'));
     myHeaders.append("Content-Type", "application/json");
 		var raw = JSON.stringify({user: localStorage.getItem('username'), tag: this.state.tags});
-		console.log(this.state.tags)
 		var requestOptions = {
       method: 'POST',
       headers: myHeaders,
@@ -35,7 +38,6 @@ class UserPrivateTags extends Component{
   	let arr = this.state.tags
   	arr.splice(arr.indexOf(c), 1)
   	this.setState({tags: arr})
-  	this.serverTagUppdate()
   }
   handleAppend(e){
   	if(document.getElementById("pablicPrivateTagAppend").value) {
@@ -43,7 +45,6 @@ class UserPrivateTags extends Component{
 	  	let arr_uppend = document.getElementById("pablicPrivateTagAppend").value.toLowerCase().split(" ")
 	  	arr = arr.concat(arr_uppend)
 	  	this.setState({tags: arr})
-	  	this.serverTagUppdate()
 	  	document.getElementById("pablicPrivateTagAppend").value = ""
 	  }
   }
@@ -84,7 +85,7 @@ class UserPrivateTags extends Component{
 		return(
 			<>
 				{this.state.tags.map( (c)  =>
-	      	<div className="usertag"> {c}  
+	      	<div className="usertag" key={c}> {c}  
 	      	<img 
 	      		className="delButton"	      		
 	      		onClick={(e) => this.handleDelete(e, c)}

@@ -12,7 +12,11 @@ class UserContacts extends Component{
           tags: []
       };
   }
-
+  componentDidUpdate(prevState) {
+	  if (this.state.tags !== prevState.tags) {
+  		this.serverTagUppdate()
+	  }
+	}
   serverTagUppdate(){
   	var myHeaders = new Headers();
 		myHeaders.append("auth", localStorage.getItem('token'));
@@ -35,14 +39,12 @@ class UserContacts extends Component{
   	let arr = this.state.tags
   	arr.splice(arr.indexOf(c), 1)
   	this.setState({tags: arr})
-  	this.serverTagUppdate()
   }
   handleAppend(e){
   	if(document.getElementById("pablicContactAppend").value) {
 	  	let arr = this.state.tags
 	  	arr.push(document.getElementById("pablicContactAppend").value)
 	  	this.setState({tags: arr})
-	  	this.serverTagUppdate()
 	  	document.getElementById("pablicContactAppend").value = ""
 	  }
   }
@@ -83,7 +85,7 @@ class UserContacts extends Component{
 		return(
 			<>
 				{this.state.tags.map( (c)  =>
-	      	<div className="usertag"> {c}  
+	      	<div className="usertag"  key={c}> {c}  
 	      	<img 
 	      		className="delButton"	      		
 	      		onClick={(e) => this.handleDelete(e, c)}

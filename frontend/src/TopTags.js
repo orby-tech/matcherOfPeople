@@ -47,11 +47,6 @@ class TopTags extends Component{
 				</h1>
           <table>
 						<tbody className="tag-top-table">
-					      <tr>
-		                <td>tag</td>
-		                <td>count</td>
-		            </tr>
-
               {this.state.tags.map( c  =>
                 <tr className="top_tags" key={c.tag}>
                   <td>{c.tag}</td>

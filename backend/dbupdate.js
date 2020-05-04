@@ -2,7 +2,7 @@ var MongoClient = require('mongodb').MongoClient;
 var urldb = "mongodb://localhost:27017/";
 arr=[]
 
-exports.dbupdate = function () {
+module.exports.dbupdate = function () {
 	MongoClient.connect(urldb)
 		.then((db) => db.db("db"))
 		.then((dbo) => dbo.collection("userprivatetag").find({},{ projection: { _id: 0, user: 0 }}).toArray())
@@ -52,7 +52,6 @@ exports.dbupdate = function () {
 			            .then((db) => db.db("db"))
 			            .then((dbo) => {
 			              dbo.collection("toptags").insertOne({tag: new_arr[coord], count: arrayCounts[coord]})
-			              resolve ("answer")
 			            })
 							}
 						})
