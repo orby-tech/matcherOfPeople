@@ -1,6 +1,5 @@
 import  React, { Component } from 'react';
 import  { Redirect } from 'react-router-dom';
-import  { Link } from 'react-router-dom';
 
 class TopTags extends Component{
   constructor(props) {
@@ -31,13 +30,11 @@ class TopTags extends Component{
 	}
   calculateWidth (count) {
     count = count / this.state.maxCount * 100
-    console.log(count.toString() + "%")
     return Math.ceil(count).toString() + "px"
   }
   calculateColor (count) {
     let green = count / this.state.maxCount * 255
     let red = (1 - count / this.state.maxCount) * 255
-    console.log("rgb("+Math.ceil(red)+", " + Math.ceil(green) + ", 0)")
     return "rgb("+red+", " + green + ", 0)"
   }
 
@@ -48,28 +45,22 @@ class TopTags extends Component{
 				<h1>
 				Top of tags
 				</h1>
-					<div >
-						<div className="tag-top-table">
-	            <thead  key="thead">
+          <table>
+						<tbody className="tag-top-table">
 					      <tr>
-		                <th>tag</th>
-		                <th>count</th>
+		                <td>tag</td>
+		                <td>count</td>
 		            </tr>
-	            </thead>
 
-							<tbody>
               {this.state.tags.map( c  =>
-                <tr className="top_tags">
+                <tr className="top_tags" key={c.tag}>
                   <td>{c.tag}</td>
                   <td>{c.count}</td>
-                  <td> <div className="counting" style={{width: this.calculateWidth(c.count), "background-color": this.calculateColor(c.count), }}/> </td>
+                  <td> <div className="counting" style={{width: this.calculateWidth(c.count), "backgroundColor": this.calculateColor(c.count), }}/> </td>
                 </tr>)} 
 
-              </tbody>
-
-						</div>
-					</div>
-
+						</tbody>
+          </table>
 			</>
 		)
 	}

@@ -113,8 +113,8 @@ class DialogsBlock extends Component{
 
 				<div className={dialogListButtons}>
           { this.state.messages.map( c  =>
-            <div className="dialog_button">
-              <td onClick={(e) => this.handleOpen(e, c)} >{c}</td>
+            <div key={c} className="dialog_button">
+              <p onClick={(e) => this.handleOpen(e, c)} >{c}</p>
             </div>)}
 			  </div>
 

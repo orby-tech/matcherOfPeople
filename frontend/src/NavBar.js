@@ -1,10 +1,6 @@
-import React, { Component, useState }  from 'react';
-import { Route } from 'react-router-dom';
+import React, { Component }  from 'react';
 
 import { Link } from 'react-router-dom';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import App from './LoginService';
 
 
 
@@ -38,8 +34,6 @@ class NavBar extends Component{
 
 
   render() {
-    const opend = this.state.opend;
-
     const pic = this.state.collapsed 
                 ? "nav_row nav_row_in" 
                 : "nav_row nav_row_in active";

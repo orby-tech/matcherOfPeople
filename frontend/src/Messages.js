@@ -1,9 +1,8 @@
 import  React, { Component } from 'react';
 import  { Redirect } from 'react-router-dom';
-import  { Link } from 'react-router-dom';
 
 import  DialogsBlock from './DialogsBlock';
-import WrappedMessagesBlock from './MessegesBlock';
+import  WrappedMessagesBlock from './MessegesBlock';
 import  WrappedAboutUserBlock from './AboutUserBlock';
 
 import  { connect } from 'react-redux'

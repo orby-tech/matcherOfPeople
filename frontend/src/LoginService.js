@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Nav from './Nav';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
-import { Link } from 'react-router-dom';
 import  { Redirect } from 'react-router-dom';
 
 import './App.css';

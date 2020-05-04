@@ -1,7 +1,6 @@
 import  React, { Component } from 'react';
 
 import  { connect } from 'react-redux'
-import  { changeDialog } from './redux/actions'
 
 import  { Redirect } from 'react-router-dom';
 
@@ -15,7 +14,8 @@ class AboutUserBlock extends Component{
       this.state  = {
           rate: 0,
           update: false,
-          rateStars: [1,2,3,4,5,6,7,8,9,10]
+          rateStars: [1,2,3,4,5,6,7,8,9,10],
+          tags: []
       };
   }
   handleRate(e, c) {
@@ -41,6 +41,7 @@ class AboutUserBlock extends Component{
       body: raw,
       redirect: 'follow'
     };
+
     fetch('http://api.getteam.space/userdialogs', requestOptions)
       .then(response => response.json())
       .then(result => {
@@ -54,6 +55,45 @@ class AboutUserBlock extends Component{
           })
         }
       })
+
+      if(this.props.dialog && this.props.dialog.split("_").length === 3) {
+        if (this.props.dialog.split("_")[0] === localStorage.getItem('username')) {
+          raw = JSON.stringify({"user": this.props.dialog.split("_")[2]});
+        } 
+        else {
+          raw = JSON.stringify({"user": this.props.dialog.split("_")[0]});
+        }
+        requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: raw,
+          redirect: 'follow'
+        };
+        fetch('http://api.getteam.space/usertag', requestOptions)
+          .then(response => response.json())
+          .then(result => {
+            if (result.statusCode){
+              if (result.statusCode === 401){
+                alert("Relogin please")
+                localStorage.removeItem("token")
+                window.location.reload();
+              }
+            } else if (result && result[0] && result[0].tag){
+              this.setState({
+                tags: result[0].tag
+              })
+            }else {
+              this.setState({
+                tags: ["No public tag's "]
+              })
+            }  
+          })
+      } else {
+            this.setState({
+              tags: ["No public tag's "]
+            })        
+      };
+
 	}
 
 
@@ -68,6 +108,7 @@ class AboutUserBlock extends Component{
           <div className="blockRateStar">
             { this.state.rateStars.map( c  =>
               <img 
+                key={c}
                 className="rateStar" 
                 onClick={(e) => this.handleRate(e, c)} 
                 alt="star"
@@ -77,6 +118,12 @@ class AboutUserBlock extends Component{
         </div>
         <div className="blockPublicTags">
           <p> Public tags </p>
+        </div>
+        <div>
+          {this.state.tags.map( (c)  =>
+            <div key={c} className="usertag"> {c}  
+            </div> 
+          )} 
         </div>
 			</>
 		)

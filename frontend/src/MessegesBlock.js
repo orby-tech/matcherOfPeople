@@ -28,7 +28,7 @@ class MessagesBlock extends Component{
       })
   }
   handleWriteMessage(){
-    if(document.getElementById("WriteNewMessage").value && this.props.dialog != false) {
+    if(document.getElementById("WriteNewMessage").value && this.props.dialog !== false) {
       let arr = this.state.messages
       arr.push([document.getElementById("WriteNewMessage").value, localStorage.getItem('username')])
       this.setState({messages: arr})
@@ -51,7 +51,6 @@ class MessagesBlock extends Component{
     fetch('http://api.getteam.space/dialog', requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log(result[0])
         this.setState({
           messages: result[0].messages
         })
@@ -70,7 +69,7 @@ class MessagesBlock extends Component{
         <div className="messages_block">
           {this.state.messages.map( c  =>
 
-            <div className="message_string">
+            <div key={c[0]+c[1]} className="message_string">
               <p 
                 className={
                   c[1] === localStorage.getItem('username')

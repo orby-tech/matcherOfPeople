@@ -185,10 +185,6 @@ function build (opts) {
         let query = {user: req.body.user}
         MongoClient.connect(urldb)
           .then((db) => db.db("tagdb"))
-          .then((dbo) => dbo.collection("userscharacter").updateOne(query, { $set: { activity: Date.now(new Date())}}))
-
-        MongoClient.connect(urldb)
-          .then((db) => db.db("tagdb"))
           .then((dbo) => dbo.collection("usertag").find(query, { projection: { _id: 0, user: 0 }}).toArray())
           .catch((err) => {})
           .then((result) => reply.send(JSON.stringify(result)))
