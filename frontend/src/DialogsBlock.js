@@ -12,8 +12,11 @@ class DialogsBlock extends Component{
       super(props);
       this.state  = {
           messages: [],
-          update: false
+          update: false,
+          dialogListStatus: false,
       };
+      this.hideDialogs = this.hideDialogs.bind(this);
+
   }
   handleOpen(e, c) {
     this.props.dispatch(changeDialog(c))
@@ -76,14 +79,26 @@ class DialogsBlock extends Component{
         }
       })
 	}
+  hideDialogs () {
+    console.log(this.state.dialogListStatus)
+    this.setState({dialogListStatus: !this.state.dialogListStatus})
+  }
 
 
 	render(){
     if (this.state.update === true) {
       this.setState({update: false})
       return <Redirect to='/messages' />}
+
+    let hideShowDialogs = this.state.dialogListStatus
+                        ? "Hide"
+                        : "Show dialogs"
+    let dialogListButtons = this.state.dialogListStatus
+                        ? "dialogs_block"
+                        : "dialogs_block hide"                        
 		return(
 			<>
+        <h3>Dialogs</h3>
         <div className="new_dialog_button">
           <img 
             className="appendDialogButton"            
@@ -91,11 +106,16 @@ class DialogsBlock extends Component{
             alt="plus"
             src={append}/>
         </div>
-				<div className="dialogs_block">
-        { this.state.messages.map( c  =>
-          <div className="dialog_button">
-            <td onClick={(e) => this.handleOpen(e, c)} >{c}</td>
-          </div>)}
+
+        <div className="dialog_button" onClick={this.hideDialogs}>
+          {hideShowDialogs}
+        </div>
+
+				<div className={dialogListButtons}>
+          { this.state.messages.map( c  =>
+            <div className="dialog_button">
+              <td onClick={(e) => this.handleOpen(e, c)} >{c}</td>
+            </div>)}
 			  </div>
 
 			</>

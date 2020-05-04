@@ -66,7 +66,7 @@ class MessagesBlock extends Component{
 
   render(){
     return(
-      <>
+      <div className="dialog">
         <div className="messages_block">
           {this.state.messages.map( c  =>
 
@@ -81,21 +81,22 @@ class MessagesBlock extends Component{
                 {c[0]}
               </p>
         </div>)} 
+        
         <div className="block_new_message">
-          <input 
-            className="input_append"
-            placeholder="Write your message"
-            id="WriteNewMessage"
-            type="text" />          
+
           <img 
             className="appendButton"            
             onClick={(e) => this.handleWriteMessage(e)}
             alt="plus"
             src={append}/>
+          <input 
+            className="input_append"
+            placeholder="Write your message"
+            id="WriteNewMessage"
+            type="text" />          
         </div>
+</div>
       </div>
-
-      </>
     )
   }
 }

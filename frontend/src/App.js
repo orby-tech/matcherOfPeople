@@ -1,7 +1,9 @@
 import  React from 'react';
 import  './App.css';
+import  './css/NavBar.css';
 
 import  Start  from './Start'
+import  NavBar from './NavBar'
 import  Profile from './Profile'
 import  WrappedMessages from './Messages'
 import  TopTags from './TopTags'
@@ -37,10 +39,11 @@ function App() {
       <Provider store={store}>
 
         <BrowserRouter>
+          <Route exact component={NavBar}/>
           <Route path="/" exact component={Start} />
           <Route path="/profile" exact component={Profile} />
           <Route path="/messages" exact component={WrappedMessages} />
-          <Route path="/tags" exact component={TopTags} />
+          <Route path="/toptags" exact component={TopTags} />
 
         </BrowserRouter>
     </Provider>

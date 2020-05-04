@@ -48,23 +48,6 @@ class TopTags extends Component{
 				<h1>
 				Top of tags
 				</h1>
-
-				<div className="grid-profile">
-					<div>
-            <Link className="nav-bar"
-                  to="/tags"> 
-                  tag's top
-            </Link>
-            <Link className="nav-bar"
-                  to="/messages"> 
-                  messages
-            </Link>
-            <Link className="nav-bar"
-                  to="/profile"> 
-                  profile 
-            </Link>
-					</div>
-
 					<div >
 						<div className="tag-top-table">
 	            <thead  key="thead">
@@ -85,9 +68,7 @@ class TopTags extends Component{
               </tbody>
 
 						</div>
-						</div>
 					</div>
-				<div/>
 
 			</>
 		)

@@ -40,7 +40,8 @@ class UserTags extends Component{
   handleAppend(e){
   	if(document.getElementById("pablicTagAppend").value) {
 	  	let arr = this.state.tags
-	  	arr.push(document.getElementById("pablicTagAppend").value)
+	  	let arr_uppend = document.getElementById("pablicTagAppend").value.toLowerCase().split(" ")
+	  	arr = arr.concat(arr_uppend)
 	  	this.setState({tags: arr})
 	  	this.serverTagUppdate()
 	  	document.getElementById("pablicTagAppend").value = ""

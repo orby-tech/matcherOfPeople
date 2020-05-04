@@ -40,7 +40,8 @@ class UserPrivateTags extends Component{
   handleAppend(e){
   	if(document.getElementById("pablicPrivateTagAppend").value) {
 	  	let arr = this.state.tags
-	  	arr.push(document.getElementById("pablicPrivateTagAppend").value)
+	  	let arr_uppend = document.getElementById("pablicPrivateTagAppend").value.toLowerCase().split(" ")
+	  	arr = arr.concat(arr_uppend)
 	  	this.setState({tags: arr})
 	  	this.serverTagUppdate()
 	  	document.getElementById("pablicPrivateTagAppend").value = ""

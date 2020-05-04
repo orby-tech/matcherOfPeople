@@ -49,7 +49,6 @@ button {
 input {
   display: block;
   width: 200px;
-  margin-left:  calc(50% - 100px);
   margin-bottom: 10px;
 }
 input.form-control {
@@ -59,8 +58,8 @@ input.form-control {
 
 .tags {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  grid-gap: 12vw;
+  grid-template-columns: 300px 300px 300px;
+  grid-gap: 2vw;
 
 }
 h1 {
@@ -73,9 +72,22 @@ h3 {
   width: 100%;
   display: block;
 }
+
 .grid-profile {
   display: grid;
-  grid-template-columns: 0.1fr 1fr 0.1fr;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-columns: minmax(200px, auto);
+  grid-gap: 2vw;
+}
+@media screen and (max-width: 800px) {
+  .grid-profile {
+    display: block;
+    margin-top: 40px;
+
+  }
+  .input-group {
+    margin-top: 40px;
+  }
 }
 .nav-bar {
   width: 100%;
@@ -100,33 +112,60 @@ margin-left: 60px;
 }
 
 .input_append {
-  width: 80%;
-  margin: 0px;
-  margin-top: 25px;
-  float: left;
+  width: calc(100% - 40px);
+  bottom: 0px;
+  margin-left: 5px;
+  margin-top: 10px;
+  right: 20px;
+  border: 1px solid rgba(0, 100, 255, 0.4);
+  height: 60px;
+  padding: 15px;
+  border-radius: 8px;
+  z-index: 2;
+  float:left;
 }
 .appendButton {
-  margin-top: 28px;
-  margin-left: 6px;
+  float: right;
   width: 25px;
   height: 25px;
+  margin-top: 26px;
+  margin-right: 5px;
 }
 
 .block_input{
   width: 100%;
   height: 30px;
 }
-.grid_of_dialogs {
+.grid-of-dialogs {
   display: grid;
-  grid-template-columns: 0.1fr 1fr 0.5fr;
-  grid-gap: 2vw;
+  grid-template-columns: 0.5fr 2fr 0.9fr;
+  grid-gap: 1vw;
+}
+@media screen and (max-width: 800px) {
+  .grid-of-dialogs {
+    display: block;
+
+  }
+  .input-group {
+    margin-top: 40px;
+  }
+  .messeges {
+    width: 100%;
+    float: none;
+  }
+  .mes {
+    display: block;
+  }
+}
+.messeges {
+  width: 100%;
 }
 .mes {
   display: inline-block;
 }
 
 .dialogs_block {
-
+  font-size: 120%;
   display: grid;
 
 }
@@ -176,14 +215,17 @@ margin-left: 60px;
   border-radius: 20px;
 
 }
+.dialog {
+  width:100%;
+}
 .message_string {
   height: auto;
   padding: 10px;
 }
 
 .block_new_message {
-  margin-left: 20px;
-  margin-bottom: 40px;
+  float: none;
+  width: 100%;
 }
 .appendDialogButton {
   width: 25px;
@@ -216,4 +258,9 @@ margin-left: 60px;
 }
 .blockPublicTags {
   margin-top: 15px;
+}
+
+
+.hide {
+  display: none;
 }

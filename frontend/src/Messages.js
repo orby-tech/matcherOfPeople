@@ -21,47 +21,30 @@ class Messages extends Component{
 				Messages
 				</h1>
 
-				<div className="grid-profile">
-					<div>
-            <Link className="nav-bar"
-                  to="/tags"> 
-                  tag's top
-            </Link>
-            <Link className="nav-bar"
-                  to="/messages"> 
-                  messages
-            </Link>
-            <Link className="nav-bar"
-                  to="/profile"> 
-                  profile 
-            </Link>
+			
+				<div className="grid-of-dialogs">
+
+					<div className="dialogs mes">
+						<DialogsBlock />
+					</div>					
+
+					<div className="messeges mes">
+						<h3>{
+							this.props.dialog 
+								? "Dialog №" + this.props.dialog
+								: "Messages"
+						}
+						</h3>
+						<WrappedMessagesBlock />
+
+					</div>					
+
+					<div className="profile mes">
+						<h3>Profile</h3>
+						<WrappedAboutUserBlock />
 					</div>
-					<div className="grid_of_dialogs">
 
-						<div className="dialogs mes">
-							<h3>Dialogs</h3>
-							<DialogsBlock />
-						</div>					
-
-						<div className="messeges mes">
-							<h3>{
-								this.props.dialog 
-									? "Dialog №" + this.props.dialog
-									: "Messages"
-							}
-							</h3>
-							<WrappedMessagesBlock />
-
-						</div>					
-
-						<div className="profile mes">
-							<h3>Profile</h3>
-							<WrappedAboutUserBlock />
-						</div>
-
-					</div>
-				</div>
-				<div/>
+			</div>
 
 			</>
 		)

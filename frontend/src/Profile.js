@@ -21,22 +21,8 @@ class Profile extends Component{
 				Your profile
 				</h1>
 
-				<div className="grid-profile">
-					<div>
-            <Link className="nav-bar"
-                  to="/tags"> 
-                  tag's top
-            </Link>
-            <Link className="nav-bar"
-                  to="/messages"> 
-                  messages
-            </Link>
-            <Link className="nav-bar"
-                  to="/profile"> 
-                  profile 
-            </Link>
-					</div>
-					<div className="tags">
+				
+					<div className="grid-profile">
 						<div className="input-group">
 							<h3> Your private tags </h3>
 							<UserPrivateTags />
@@ -52,9 +38,6 @@ class Profile extends Component{
 						  <UserContacts />
 						</div>
 					</div>
-				</div>
-			<div/>
-
 		</>
 		)
 	}
