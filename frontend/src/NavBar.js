@@ -42,10 +42,7 @@ class NavBar extends Component{
                 : 'collapse navbar-collapse show';
     
 
-    return(
-      <>
-
-        <div className="container">          
+    return(   
           <nav className="navbar navbar-light transparent-nav" id="navBar">
             <p className="" id="navBar">GetTeam</p>
 
@@ -87,8 +84,6 @@ class NavBar extends Component{
             
 
         </nav>
-      </div>
-    </>
     );
   }
 }

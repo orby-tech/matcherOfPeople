@@ -5,12 +5,6 @@ var MongoClient = require('mongodb').MongoClient;
 var urldb = "mongodb://localhost:27017/";
 var dbupdate = require('./dbupdate')
 
-const sayHi = () => new Promise((resolve, reject) => {
-  console.log("start")
-  console.log(dbupdate.dbupdate())
-})
-setTimeout(sayHi, 1000);
-
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
@@ -374,10 +368,94 @@ function build (opts) {
                   reply.send("re-login")
                 }
             })
+          })       
+      }
+    })
+    fastify.route({
+      method: 'POST',
+      url: '/findByTag',
+      preHandler: fastify.auth([fastify.verifyJWTandLevelDB]),
+      handler: (req, reply) => {
+        req.log.info('Auth route')
+        let username = req.body.user
+        let tafForFind = req.body.tag
+        let query = {user: username}
+        let now = new Date()
+        MongoClient.connect(urldb)
+          .then((db) => db.db("tagdb"))
+          .then((dbo) => dbo.collection("usertag").find(query).toArray())   // Запросим данные юзера 
+          .catch((err) => {console.log(err)})
+          .then((result_user) => {
+            console.log("result_user", result_user)
+            MongoClient.connect(urldb)
+              .then((db) => db.db("tagdb"))
+              .then((dbo) => dbo.collection("userscharacter").find(query).toArray())  // Запросим список использованных контактов
+              .catch((err) => {console.log(err)})
+              .then((result_blacklist) => {
+                if(result_blacklist != undefined 
+                  && result_blacklist[0] != undefined 
+                  && result_blacklist[0].quality != undefined){
+                  MongoClient.connect(urldb)
+                    .then(db => db.db("tagdb"))
+                    .then(dbo => dbo
+                      .collection("userscharacter")         // Запросим данные некоторого колличества людей которые рядом по качеству и 
+                      .find({ $and:
+                        [
+                        {quality: {$lte: result_blacklist[0].quality}}]
+                      },
+                        { projection: { _id:0, activity:0}})
+                      .limit(10)
+                      .toArray())
+                    .catch((err) => {console.log(err)})
+                    .then((result) => {
+                        let arr_quality = []
+                        let arr_user = []
+                        console.log("result_blacklist[0].blacklist", result_blacklist[0].blacklist)
+                        console.log("result",result)
+                        for (let i = 0; i < result.length; i++ ){            // фильтрация по блаклист
+                          if (!(result_blacklist[0].blacklist.indexOf(result[i].user) >= 0 )) {
+                            arr_quality.push(result[i].quality)
+                            arr_user.push(result[i].user)
+                          }
+                        }
+                        console.log("arr_quality", arr_quality)
+                        console.log("arr_user", arr_user)
+                        MongoClient.connect(urldb)
+                          .then((db) => db.db("tagdb"))
+                          .then((dbo) => dbo
+                            .collection("usertag")
+                            .find({ user: {$in: arr_user} } ,{projection: { _id:0}})
+                            .limit(10)
+                            .toArray())
+                          .catch((err) => {console.log(err)})
+                          .then((result_tag) => {
+                            
+                            let array_of_counts = []
+                            let array_of_names =[]
+                            for (let i = 0; i < result.length; i++) {
+                              if (result_tag[i] !== undefined && result_tag[i].user !== username) {
+                                let array_of_users_tags = result_user[0].tag
+                                let count_common_tags = array_of_users_tags.filter(function(obj) { return result_tag[i].tag.indexOf(obj) >= 0; }).length;
+                                let count_all_tags = array_of_users_tags.length + result_tag[i].tag.length - count_common_tags
+                                let index_of_location = arr_user.indexOf(result_tag[i].user)
+                                array_of_counts.push(count_common_tags / count_all_tags * arr_quality[index_of_location] * 1000)
+                                array_of_names.push(result_tag[i].user)
+                              } 
+                            }
+                            console.log("array_of_counts", array_of_counts)
+                            console.log("array_of_names" + array_of_names)
+                            let sum = 0
+                            for (let i = 0; i < array_of_counts.length; i++) {
+                              sum += array_of_counts[i]
+                            }
+                            reply.send({counts:array_of_counts, names: array_of_names})
+                          })
+                      })
+                } else{
+                  reply.send("re-login")
+                }
+            })
           })
-
-          
-
       }
     })
     fastify.route({

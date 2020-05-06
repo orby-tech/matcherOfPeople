@@ -1,5 +1,7 @@
 import  React, { Component } from 'react';
 import  { Redirect } from 'react-router-dom';
+import  WrappedFindUserByTag from './findUserByTag'
+
 
 class TopTags extends Component{
   constructor(props) {
@@ -45,17 +47,18 @@ class TopTags extends Component{
 				<h1>
 				Top of tags
 				</h1>
-          <table>
-						<tbody className="tag-top-table">
-              {this.state.tags.map( c  =>
-                <tr className="top_tags" key={c.tag}>
-                  <td>{c.tag}</td>
-                  <td>{c.count}</td>
-                  <td> <div className="counting" style={{width: this.calculateWidth(c.count), "backgroundColor": this.calculateColor(c.count), }}/> </td>
-                </tr>)} 
+        <table class="top-tag__table">
+					<tbody className="tag-top-table">
+            {this.state.tags.map( c  =>
+              <tr className="top_tags" key={c.tag}>
+                <td>{c.tag}</td>
+                <td>{c.count}</td>
+                <td> <div className="top-tag__counting" style={{width: this.calculateWidth(c.count), "backgroundColor": this.calculateColor(c.count), }}/> </td>
+              </tr>)} 
 
-						</tbody>
-          </table>
+					</tbody>
+        </table>
+        <WrappedFindUserByTag />
 			</>
 		)
 	}

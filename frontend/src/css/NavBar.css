@@ -3,7 +3,6 @@
   width: 60px;
   height: 60px;
   background-size: cover;
-  margin-right: -80px;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   transition: transform 400ms;
