@@ -378,7 +378,7 @@ function build (opts) {
       handler: (req, reply) => {
         req.log.info('Auth route')
         let username = req.body.user
-        let tafForFind = req.body.tag
+        let tagForFind = req.body.tag
         let query = {user: username}
         let now = new Date()
         MongoClient.connect(urldb)
@@ -424,7 +424,11 @@ function build (opts) {
                           .then((db) => db.db("tagdb"))
                           .then((dbo) => dbo
                             .collection("usertag")
-                            .find({ user: {$in: arr_user} } ,{projection: { _id:0}})
+                            .find({ $and:
+                                    [{user: {$in: arr_user}},
+                                    {tag: tagForFind}]
+                                  },
+                                  {projection: { _id:0}})
                             .limit(10)
                             .toArray())
                           .catch((err) => {console.log(err)})

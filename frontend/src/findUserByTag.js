@@ -14,17 +14,19 @@ class FindUserByTag extends Component{
       };
   }
   findUserByTag() {
+  	this.setState({ people: [] })
   	var myHeaders = new Headers();
 		myHeaders.append("auth", localStorage.getItem('token'));
     myHeaders.append("Content-Type", "application/json");
 		var raw = JSON.stringify({user: localStorage.getItem('username'), tag: document.getElementById("find-user__input").value.split(" ")[0]});
+		document.getElementById("find-user__input").value = ""
 		var requestOptions = {
       method: 'POST',
       headers: myHeaders,
       body: raw,
       redirect: 'follow'
     };
-    fetch('http://127.0.0.1:8000/findByTag', requestOptions)
+    fetch('http://api.getteam.space/findByTag', requestOptions)
       .then(response => response.json())
       .then(result => {
       	let arr = []
